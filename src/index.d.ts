@@ -1,6 +1,6 @@
-import { EventEmitter } from 'events';
+import { EventEmitter } from "events";
 
-interface TalkscriberOptions {
+export interface TalkscriberOptions {
   apiKey: string;
   language?: string;
   endpoint?: string;
@@ -8,25 +8,15 @@ interface TalkscriberOptions {
   onUtterance?: (text: string) => void;
 }
 
-declare class TalkscriberTranscriptionService extends EventEmitter {
-  constructor(options: TalkscriberOptions);
-  send(payload: Float32Array, sampleRate: number): void;
-  close(): void;
-}
-
-export = TalkscriberTranscriptionService;
-import { EventEmitter } from "events";
-
-export interface TalkscriberOptions {
-  apiKey: string;
-  language?: "en" | "ar";
-  onTranscription?: (text: string) => void;
-  onUtterance?: (text: string) => void;
-}
-
 export class TalkscriberTranscriptionService extends EventEmitter {
   constructor(options: TalkscriberOptions);
   
+  /**
+   * Connects to the Talkscriber service and authenticates.
+   * @returns {Promise<void>} A promise that resolves when connected and authenticated.
+   */
+  connect(): Promise<void>;
+
   /**
    * Sends audio data to the transcription service.
    * @param payload - The audio data to send.
