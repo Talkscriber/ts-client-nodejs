@@ -102,7 +102,13 @@ export class TalkscriberTranscriptionService extends EventEmitter {
       this.ws.on("close", (code: number, reason: string) => {
         console.error(`WebSocket closed with code ${code}: ${reason}`);
         if (!authResponseReceived) {
-          const error = new Error("Connection closed unexpectedly. Please check your internet connection and API key.");
+          let errorMessage = "Connection closed unexpectedly.";
+          if (code === 1000 && !this.isAuthenticated) {
+            errorMessage = "Authentication failed. Please check your API key.";
+          } else {
+            errorMessage += " Please check your internet connection and try again.";
+          }
+          const error = new Error(errorMessage);
           this.emit("error", error);
           reject(error);
         }
