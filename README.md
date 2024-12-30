@@ -39,9 +39,13 @@ Follow these steps to install and use the ts-client for Talkscriber:
        console.log('Connected to Talkscriber service');
 
        // Your audio processing code here
+       // For example:
+       // const audioData = new Float32Array(/* your audio data */);
+       // const sampleRate = 44100; // or your actual sample rate
+       // talkscriber.send(audioData, sampleRate);
 
      } catch (error) {
-       console.error('Error:', error);
+       console.error('Error:', error instanceof Error ? error.message : String(error));
      } finally {
        talkscriber.close();
      }
@@ -52,7 +56,12 @@ Follow these steps to install and use the ts-client for Talkscriber:
 
 3. Replace `<YOUR_API_KEY>` with your actual Talkscriber API key.
 
-4. Compile and run your TypeScript code:
+4. Install the necessary TypeScript dependencies if you haven't already:
+   ```bash
+   npm install -D typescript ts-node @types/node
+   ```
+
+5. Compile and run your TypeScript code:
    ```bash
    npx ts-node transcribe.ts
    ```
