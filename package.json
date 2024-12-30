@@ -24,7 +24,6 @@
   "author": "Talkscriber <support@talkscriber.com>",
   "license": "MIT",
   "dependencies": {
-    "@talkscriber-npm/ts-client": "^1.0.5",
     "wav-decoder": "^1.3.0",
     "ws": "^7.5.10"
   },
