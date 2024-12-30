@@ -1,4 +1,3 @@
-import "colors";
 import { EventEmitter } from "events";
 import WebSocket from "ws";
 import { randomUUID } from "node:crypto";
@@ -44,7 +43,7 @@ export class TalkscriberTranscriptionService extends EventEmitter {
     this.ws = new WebSocket("wss://api.talkscriber.com:9090");
  
     this.ws.on("open", () => {
-      console.log("STT -> Talkscriber connection opened".green);
+      console.log("STT -> Talkscriber connection opened");
       this.ws.send(
         JSON.stringify({
           uid: this.uid,
