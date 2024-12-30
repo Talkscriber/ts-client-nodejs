@@ -1,8 +1,8 @@
 <h3 align="center">
-  Node.js Client API for State-of-the-Art Speech-to-Text, Suitable for Modern Conversational AI
+  ts-client: Node.js Client API for State-of-the-Art Speech-to-Text, Suitable for Modern Conversational AI
 </h3>
 
-# About
+# About ts-client
 Talkscriber offers a state-of-the-art Speech-to-Text (STT) platform tailored for conversational AI enterprises. It provides exceptional transcription services with a strong emphasis on privacy and security to enhance customer communication while protecting their sensitive information. 
 
 # Key Features
@@ -12,30 +12,42 @@ Talkscriber offers a state-of-the-art Speech-to-Text (STT) platform tailored for
 
 # Installation and Getting Started
 
-Follow these steps to install and use the Talkscriber Node.js client:
+Follow these steps to install and use the ts-client for Talkscriber:
 
-1. Clone the repository or download the source code.
-
-2. Navigate to the project directory and install dependencies:
+1. Install the package:
    ```bash
-   npm install
+   npm install ts-client
    ```
 
-3. In `talkscriber_client.ts`, replace `<YOUR_API_KEY>` with your actual Talkscriber API key.
+2. In your project, create a new file (e.g., `transcribe.ts`) and add the following code:
+   ```typescript
+   import { TalkscriberTranscriptionService } from 'ts-client';
 
-4. Ensure you have a sample WAV file named `example_8k.wav` in the project root directory.
+   const talkscriber = new TalkscriberTranscriptionService({
+     agent: null,
+     integration: { auth: { api_key: '<YOUR_API_KEY>' } },
+     onTranscription: (text: string) => {
+       console.log('Transcription:', text);
+     },
+     onUtterance: (text: string) => {
+       console.log('Utterance:', text);
+     }
+   });
 
-5. Compile the TypeScript code:
-   ```bash
-   npm run build
+   // Your audio processing code here
    ```
 
-6. Run the client:
+3. Replace `<YOUR_API_KEY>` with your actual Talkscriber API key.
+
+4. Compile and run your TypeScript code:
    ```bash
-   npm start
+   tsc transcribe.ts
+   node transcribe.js
    ```
 
-This will start the Talkscriber client, which will process the `example_8k.wav` file and output the transcription.
+This will initialize the Talkscriber client. You'll need to add your own audio processing logic to send audio data to the `talkscriber.send()` method.
+
+For a complete example of audio file processing, refer to the `talkscriber_client.ts` file in the package source code.
 
 Please note that the provided code is agnostic towards the sample rate and should be able to handle 
 any .wav file/buffer that is pcm_s16le encoded.
