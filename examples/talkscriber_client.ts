@@ -20,36 +20,35 @@ async function decodeWavFile(filePath: string): Promise<[Float32Array, number]> 
 }
 
 // Function to mimic stream audio data
-async function streamAudioData(audioData: Float32Array, chunkSize: number, sampleRate: number) {
+async function streamAudioData(audioData: Float32Array, chunkSize: number, sampleRate: number, talkscriber: TalkscriberTranscriptionService) {
     for (let i = 0; i < audioData.length; i += chunkSize) {
         const chunk = audioData.slice(i, Math.min(i + chunkSize, audioData.length));
-        // Convert Float32Array to base64 string
         talkscriber.send(chunk, sampleRate);
-        // Wait ~64ms between chunks (simulating 16kHz streaming)
-        // calculate the best chunk wait based on the sample rate
+        // Wait between chunks (simulating streaming)
         const chunkWait = 1000 / sampleRate * chunkSize;
         await new Promise(resolve => setTimeout(resolve, chunkWait));
     }
 }
 
-// Create TalkscriberTranscriptionService instance
-const talkscriber = new TalkscriberTranscriptionService({
-    apiKey: 'YOUR_API_KEY_HERE', // Replace with your actual Talkscriber API key
-    onTranscription: (text: string) => {
-        console.log('Transcription:', text);
-    },
-    onUtterance: (text: string) => {
-        console.log('Utterance:', text);
-    }
-});
+async function main() {
+    // Create TalkscriberTranscriptionService instance
+    const talkscriber = new TalkscriberTranscriptionService({
+        apiKey: 'YOUR_API_KEY_HERE', // Replace with your actual Talkscriber API key
+        language: 'en',
+        onTranscription: (text: string) => {
+            console.log('Transcription:', text);
+        },
+        onUtterance: (text: string) => {
+            console.log('Utterance:', text);
+        }
+    });
 
-// Process and stream the audio
-(async () => {
+    // Process and stream the audio
     try {
         await talkscriber.connect();
         console.log('Connected and authenticated successfully');
         const [audioData, sampleRate] = await decodeWavFile(audioFilePath);
-        await streamAudioData(audioData, 4096, sampleRate);
+        await streamAudioData(audioData, 4096, sampleRate, talkscriber);
     } catch (err) {
         console.error('Error:', err instanceof Error ? err.message : String(err));
         if (err instanceof Error) {
@@ -60,11 +59,19 @@ const talkscriber = new TalkscriberTranscriptionService({
             }
         }
         process.exit(1);
+    } finally {
+        // Close the service when done
+        setTimeout(() => {
+            talkscriber.close();
+            console.log('Service closed');
+        }, 5000);
     }
-})();
+}
 
 // Handle cleanup
 process.on('SIGINT', () => {
-    talkscriber.close();
+    console.log('Received SIGINT. Exiting...');
     process.exit();
 });
+
+main().catch(console.error);
