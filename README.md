@@ -27,7 +27,7 @@ any .wav file/buffer that is pcm_s16le encoded.
 
 # Supported Languages
 The Talkscriber engine handles the following languages:
-"en": "english"
+"en": "english",
 "zh": "chinese"
 "de": "german"
 "es": "spanish"
