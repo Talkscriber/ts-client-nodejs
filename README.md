@@ -23,28 +23,41 @@ Follow these steps to install and use the ts-client for Talkscriber:
    ```typescript
    import { TalkscriberTranscriptionService } from '@talkscriber-npm/ts-client';
 
-   const talkscriber = new TalkscriberTranscriptionService({
-     apiKey: '<YOUR_API_KEY>',
-     onTranscription: (text: string) => {
-       console.log('Transcription:', text);
-     },
-     onUtterance: (text: string) => {
-       console.log('Utterance:', text);
-     }
-   });
+   async function main() {
+     const talkscriber = new TalkscriberTranscriptionService({
+       apiKey: '<YOUR_API_KEY>',
+       onTranscription: (text: string) => {
+         console.log('Transcription:', text);
+       },
+       onUtterance: (text: string) => {
+         console.log('Utterance:', text);
+       }
+     });
 
-   // Your audio processing code here
+     try {
+       await talkscriber.connect();
+       console.log('Connected to Talkscriber service');
+
+       // Your audio processing code here
+
+     } catch (error) {
+       console.error('Error:', error);
+     } finally {
+       talkscriber.close();
+     }
+   }
+
+   main().catch(console.error);
    ```
 
 3. Replace `<YOUR_API_KEY>` with your actual Talkscriber API key.
 
 4. Compile and run your TypeScript code:
    ```bash
-   tsc transcribe.ts
-   node transcribe.js
+   npx ts-node transcribe.ts
    ```
 
-This will initialize the Talkscriber client. You'll need to add your own audio processing logic to send audio data to the `talkscriber.send()` method.
+This will initialize the Talkscriber client and connect to the service. You'll need to add your own audio processing logic to send audio data to the `talkscriber.send()` method.
 
 For complete examples of audio file processing, refer to the `examples` directory in the package source code.
 
@@ -52,12 +65,9 @@ For complete examples of audio file processing, refer to the `examples` director
 
 To run the provided examples:
 
-1. Navigate to the `examples` directory:
-   ```bash
-   cd examples
-   ```
+1. Ensure you're in the root directory of the project where `package.json` is located.
 
-2. Install the required dependencies:
+2. Install the required dependencies if you haven't already:
    ```bash
    npm install
    ```
@@ -67,8 +77,9 @@ To run the provided examples:
    npm run example
    ```
 
-Please note that the provided code is agnostic towards the sample rate and should be able to handle 
-any .wav file/buffer that is pcm_s16le encoded.
+Please note that you need to replace `<YOUR_API_KEY>` in the example script with your actual Talkscriber API key before running it.
+
+The provided code is agnostic towards the sample rate and should be able to handle any .wav file/buffer that is pcm_s16le encoded.
 
 # Supported Languages
 The Talkscriber engine handles the following languages:
