@@ -34,7 +34,7 @@ async function streamAudioData(audioData: Float32Array, chunkSize: number, sampl
 
 // Create TalkscriberTranscriptionService instance
 const talkscriber = new TalkscriberTranscriptionService({
-    apiKey: '<YOUR_API_KEY>',
+    apiKey: 'ALLbolf7H9nAo88ypkfwYLytOH9fosKMXpZcc-uZlhA',
     onTranscription: (text: string) => {
         console.log('Transcription:', text);
     },
