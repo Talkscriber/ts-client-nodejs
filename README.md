@@ -26,6 +26,7 @@ Follow these steps to install and use the ts-client for Talkscriber:
    async function main() {
      const talkscriber = new TalkscriberTranscriptionService({
        apiKey: '<YOUR_API_KEY>',
+       language: 'en', // Specify the language here (e.g., 'en' for English)
        onTranscription: (text: string) => {
          console.log('Transcription:', text);
        },
