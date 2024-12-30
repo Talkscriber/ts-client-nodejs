@@ -1,17 +1,15 @@
 import * as fs from 'fs';
 import { decode } from 'wav-decoder';
-import { TalkscriberTranscriptionService } from 'ts-client';
+import { TalkscriberTranscriptionService } from '../src/TalkscriberTranscriptionService';
 
 const audioFilePath = './examples/sample.wav';
 
-// Function to decode WAV file
 async function decodeWavFile(filePath: string): Promise<[Float32Array, number]> {
     const buffer = fs.readFileSync(filePath);
     const audioData = await decode(buffer);
     
     console.log(`Audio format: ${audioData.sampleRate}Hz, ${audioData.channelData.length} channel(s), ${audioData.channelData[0].length} samples`);
 
-    // Verify format meets requirements
     if (audioData.channelData.length !== 1) {
         throw new Error(`Invalid audio format. Expected: mono`);
     }
@@ -19,31 +17,22 @@ async function decodeWavFile(filePath: string): Promise<[Float32Array, number]> 
     return [audioData.channelData[0], audioData.sampleRate];
 }
 
-// Function to mimic stream audio data
 async function streamAudioData(audioData: Float32Array, chunkSize: number, sampleRate: number, talkscriber: TalkscriberTranscriptionService) {
     for (let i = 0; i < audioData.length; i += chunkSize) {
         const chunk = audioData.slice(i, Math.min(i + chunkSize, audioData.length));
         talkscriber.send(chunk, sampleRate);
-        // Wait between chunks (simulating streaming)
-        const chunkWait = 1000 / sampleRate * chunkSize;
-        await new Promise(resolve => setTimeout(resolve, chunkWait));
+        await new Promise(resolve => setTimeout(resolve, 1000 / sampleRate * chunkSize));
     }
 }
 
 async function main() {
-    // Create TalkscriberTranscriptionService instance
     const talkscriber = new TalkscriberTranscriptionService({
         apiKey: 'ALLbolf7H9nAo88ypkfwYLytOH9fosKMXpZcc-uZlhA',
         language: 'en',
-        onTranscription: (text: string) => {
-            console.log('Transcription:', text);
-        },
-        onUtterance: (text: string) => {
-            console.log('Utterance:', text);
-        }
+        onTranscription: (text: string) => console.log('Transcription:', text),
+        onUtterance: (text: string) => console.log('Utterance:', text)
     });
 
-    // Process and stream the audio
     try {
         console.log('Connecting to Talkscriber service...');
         await talkscriber.connect();
@@ -52,13 +41,6 @@ async function main() {
         await streamAudioData(audioData, 4096, sampleRate, talkscriber);
     } catch (err) {
         console.error('Error:', err instanceof Error ? err.message : String(err));
-        if (err instanceof Error) {
-            if (err.message.includes('Authentication failed')) {
-                console.error('Please check your API key and try again.');
-            } else if (err.message.includes('Connection closed unexpectedly')) {
-                console.error('The connection was closed. Please check your internet connection and try again.');
-            }
-        }
     } finally {
         talkscriber.close();
     }
