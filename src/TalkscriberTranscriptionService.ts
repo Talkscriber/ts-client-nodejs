@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 import WebSocket from "ws";
 import { randomUUID } from "node:crypto";
 
-interface TalkscriberOptions {
+export interface TalkscriberOptions {
   apiKey: string;
   language?: string;
   endpoint?: string;
