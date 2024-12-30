@@ -174,3 +174,8 @@ cython_debug/
 # Node.js dependencies
 node_modules/
 package-lock.json
+
+# Generated files in examples
+examples/*.js
+examples/*.d.ts
+examples/*.map
