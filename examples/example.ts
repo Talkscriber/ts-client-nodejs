@@ -50,11 +50,13 @@ async function main() {
         const [audioData, sampleRate] = await decodeWavFile(audioFilePath);
         await streamAudioData(audioData, 4096, sampleRate, talkscriber);
     } catch (err) {
-        console.error('Error:', err.message);
-        if (err.message.includes('Authentication failed')) {
-            console.error('Please check your API key and try again.');
-        } else if (err.message.includes('Connection timed out')) {
-            console.error('The server did not respond in time. Please check your internet connection and try again.');
+        console.error('Error:', err instanceof Error ? err.message : String(err));
+        if (err instanceof Error) {
+            if (err.message.includes('Authentication failed')) {
+                console.error('Please check your API key and try again.');
+            } else if (err.message.includes('Connection timed out')) {
+                console.error('The server did not respond in time. Please check your internet connection and try again.');
+            }
         }
         process.exit(1);
     } finally {
