@@ -4,7 +4,8 @@ import { randomUUID } from "node:crypto";
 
 interface TalkscriberOptions {
   apiKey: string;
-  language?: "en" | "ar";
+  language?: string;
+  endpoint?: string;
   onTranscription?: (text: string) => void;
   onUtterance?: (text: string) => void;
 }
@@ -18,7 +19,7 @@ export class TalkscriberTranscriptionService extends EventEmitter {
   private finalResult: string = "";
   private speechFinal: boolean = false;
   private uid: string;
-  private options: TalkscriberOptions;
+  private options: TalkscriberOptions & { endpoint: string; language: string };
   private isAuthenticated: boolean = false;
 
   /**
@@ -27,7 +28,11 @@ export class TalkscriberTranscriptionService extends EventEmitter {
    */
   constructor(options: TalkscriberOptions) {
     super();
-    this.options = options;
+    this.options = {
+      ...options,
+      endpoint: options.endpoint || "wss://api.talkscriber.com:9090",
+      language: options.language || "en"
+    };
     this.uid = randomUUID();
   }
 
@@ -37,7 +42,7 @@ export class TalkscriberTranscriptionService extends EventEmitter {
    */
   public async connect(): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.ws = new WebSocket("wss://api.talkscriber.com:9090");
+      this.ws = new WebSocket(this.options.endpoint);
 
       this.ws.on("open", () => {
         console.log("STT -> Talkscriber connection opened");

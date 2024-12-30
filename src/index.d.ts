@@ -2,7 +2,8 @@ import { EventEmitter } from 'events';
 
 interface TalkscriberOptions {
   apiKey: string;
-  language?: "en" | "ar";
+  language?: string;
+  endpoint?: string;
   onTranscription?: (text: string) => void;
   onUtterance?: (text: string) => void;
 }
