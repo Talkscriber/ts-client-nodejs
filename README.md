@@ -16,12 +16,12 @@ Follow these steps to install and use the ts-client for Talkscriber:
 
 1. Install the package:
    ```bash
-   npm install ts-client
+   npm install @talkscriber/ts-client
    ```
 
 2. In your project, create a new file (e.g., `transcribe.ts`) and add the following code:
    ```typescript
-   import { TalkscriberTranscriptionService } from '../src/TalkscriberTranscriptionService';
+   import { TalkscriberTranscriptionService } from '@talkscriber/ts-client';
 
    const talkscriber = new TalkscriberTranscriptionService({
      apiKey: '<YOUR_API_KEY>',
