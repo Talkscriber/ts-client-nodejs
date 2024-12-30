@@ -1,0 +1,1 @@
+export { TalkscriberTranscriptionService } from './TalkscriberTranscriptionService';

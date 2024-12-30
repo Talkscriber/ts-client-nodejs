@@ -1,3 +1,1 @@
-const { TalkscriberTranscriptionService } = require('./TalkscriberTranscriptionService');
-
-module.exports = TalkscriberTranscriptionService;
+module.exports = require('./dist/TalkscriberTranscriptionService').TalkscriberTranscriptionService;
