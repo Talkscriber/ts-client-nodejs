@@ -12,11 +12,13 @@ async function main() {
     });
 
     // Read and decode a WAV file
-    const buffer = fs.readFileSync('path/to/your/audio/file.wav');
+    const buffer = fs.readFileSync('./sample.wav');
     const decodedAudio = await wavDecoder.decode(buffer);
 
     // Send the audio data to the service
     service.send(decodedAudio.channelData[0], decodedAudio.sampleRate);
+
+    console.log('Audio data sent to the service');
 
     // Listen for transcription events
     service.on('transcription', (text) => {
