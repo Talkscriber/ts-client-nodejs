@@ -1,9 +1,9 @@
 <h3 align="center">
-  ts-client: Node.js Client API for State-of-the-Art Speech-to-Text, Suitable for Modern Conversational AI
+  talkscriber-ts-client: Node.js Client API for State-of-the-Art Speech-to-Text, Suitable for Modern Conversational AI
 </h3>
 
-# About ts-client
-ts-client is the official TypeScript client for Talkscriber, a state-of-the-art Speech-to-Text (STT) platform tailored for conversational AI enterprises. It provides exceptional transcription services with a strong emphasis on privacy and security to enhance customer communication while protecting sensitive information.
+# About talkscriber-ts-client
+talkscriber-ts-client is the official TypeScript client for Talkscriber, a state-of-the-Art Speech-to-Text (STT) platform tailored for conversational AI enterprises. It provides exceptional transcription services with a strong emphasis on privacy and security to enhance customer communication while protecting sensitive information.
 
 # Key Features of Talkscriber
 - **A Word Error Rate (WER) of less than 4%**
@@ -16,7 +16,7 @@ Follow these steps to install and use the ts-client for Talkscriber:
 
 1. Install the package:
    ```bash
-   npm install ts-client
+   npm install talkscriber-ts-client
    ```
 
 2. In your project, create a new file (e.g., `transcribe.ts`) and add the following code:

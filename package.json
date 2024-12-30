@@ -1,5 +1,5 @@
 {
-  "name": "ts-client",
+  "name": "talkscriber-ts-client",
   "version": "1.0.0",
   "description": "A professional TypeScript client module for Talkscriber",
   "main": "dist/index.js",
