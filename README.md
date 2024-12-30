@@ -64,7 +64,7 @@ To run the provided examples:
 
 3. Run the example:
    ```bash
-   ts-node talkscriber_client.ts
+   npm run example
    ```
 
 Please note that the provided code is agnostic towards the sample rate and should be able to handle 
