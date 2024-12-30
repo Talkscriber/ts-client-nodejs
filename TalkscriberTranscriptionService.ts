@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import * as WebSocket from "ws";
+import WebSocket from "ws";
 import { randomUUID } from "node:crypto";
 
 interface Agent {
@@ -40,7 +40,7 @@ export class TalkscriberTranscriptionService extends EventEmitter {
     this.onUtterance = onUtterance;
     this.uid = randomUUID();
  
-    this.ws = new WebSocket("wss://api.talkscriber.com:9090");
+    this.ws = new WebSocket("wss://api.talkscriber.com:9090") as WebSocket;
  
     this.ws.on("open", () => {
       console.log("STT -> Talkscriber connection opened");
