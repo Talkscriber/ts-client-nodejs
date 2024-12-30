@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import WebSocket from "ws";
+import * as WebSocket from "ws";
 import { randomUUID } from "node:crypto";
 
 interface Agent {
