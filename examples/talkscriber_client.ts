@@ -52,6 +52,7 @@ const talkscriber = new TalkscriberTranscriptionService({
         await streamAudioData(audioData, 4096, sampleRate);
     } catch (err) {
         console.error('Failed to process audio:', err);
+        process.exit(1);
     }
 })();
 

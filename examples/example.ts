@@ -52,6 +52,7 @@ async function main() {
         await streamAudioData(audioData, 4096, sampleRate, talkscriber);
     } catch (err) {
         console.error('Failed to process audio:', err);
+        process.exit(1);
     } finally {
         // Close the service when done
         setTimeout(() => {
