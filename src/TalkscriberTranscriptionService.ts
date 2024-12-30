@@ -50,6 +50,8 @@ export class TalkscriberTranscriptionService extends EventEmitter {
         }));
       });
 
+      let authResponseReceived = false;
+
       this.ws.on("message", (unparsedMessage: string) => {
         const msg = JSON.parse(unparsedMessage) as {
           session_id: string;
@@ -60,6 +62,8 @@ export class TalkscriberTranscriptionService extends EventEmitter {
           language_confidence: number;
           segments: { text: string }[];
         };
+
+        authResponseReceived = true;
 
         if (msg.status === "ERROR" && msg.message === "UNAUTHORIZED") {
           const error = new Error("Authentication failed. Please check your API key.");
@@ -97,7 +101,7 @@ export class TalkscriberTranscriptionService extends EventEmitter {
 
       // Add a timeout to handle cases where the server doesn't respond
       setTimeout(() => {
-        if (!this.isAuthenticated) {
+        if (!authResponseReceived) {
           const error = new Error("Connection timed out. No response from server.");
           console.error("Connection timed out. No response from server.");
           this.emit("error", error);

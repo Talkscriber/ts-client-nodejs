@@ -51,7 +51,12 @@ const talkscriber = new TalkscriberTranscriptionService({
         const [audioData, sampleRate] = await decodeWavFile(audioFilePath);
         await streamAudioData(audioData, 4096, sampleRate);
     } catch (err) {
-        console.error('Failed to process audio:', err);
+        console.error('Error:', err.message);
+        if (err.message.includes('Authentication failed')) {
+            console.error('Please check your API key and try again.');
+        } else if (err.message.includes('Connection timed out')) {
+            console.error('The server did not respond in time. Please check your internet connection and try again.');
+        }
         process.exit(1);
     }
 })();

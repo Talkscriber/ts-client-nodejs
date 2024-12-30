@@ -34,7 +34,6 @@ async function main() {
     // Create TalkscriberTranscriptionService instance
     const talkscriber = new TalkscriberTranscriptionService({
         apiKey: 'YOUR_API_KEY_HERE', // Replace with your actual Talkscriber API key
-        //apiKey: 'ALLbolf7H9nAo88ypkfwYLytOH9fosKMXpZcc-uZlhA', // Replace with your actual Talkscriber API key
         language: 'en',
         onTranscription: (text: string) => {
             console.log('Transcription:', text);
@@ -51,7 +50,12 @@ async function main() {
         const [audioData, sampleRate] = await decodeWavFile(audioFilePath);
         await streamAudioData(audioData, 4096, sampleRate, talkscriber);
     } catch (err) {
-        console.error('Failed to process audio:', err);
+        console.error('Error:', err.message);
+        if (err.message.includes('Authentication failed')) {
+            console.error('Please check your API key and try again.');
+        } else if (err.message.includes('Connection timed out')) {
+            console.error('The server did not respond in time. Please check your internet connection and try again.');
+        }
         process.exit(1);
     } finally {
         // Close the service when done
