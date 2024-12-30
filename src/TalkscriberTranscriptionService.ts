@@ -73,6 +73,15 @@ export class TalkscriberTranscriptionService extends EventEmitter {
           this.isAuthenticated = true;
           console.log("Authentication successful");
           resolve();
+          return;
+        }
+
+        if (msg.status === "ERROR") {
+          const error = new Error(`Server error: ${msg.message}`);
+          this.emit("error", error);
+          reject(error);
+          this.close();
+          return;
         }
 
         this.handleMessage(msg);
