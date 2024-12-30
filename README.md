@@ -10,17 +10,32 @@ Talkscriber offers a state-of-the-art Speech-to-Text (STT) platform tailored for
 - **Very low latency (under 150 ms)**
 - **Support for 50+ languages**
 
-# Getting Started
-Below is an example of how to connect to Talkscriber's Speech-to-Text API using Node.js.
-Follow these steps to get started:
+# Installation and Getting Started
 
-1. In `talkscriber_client.ts`, replace `<YOUR_API_KEY>` with your actual API key.
-2. Ensure your sample file `example_8k.wav` is in place.
-3. Run the code using the following commands:
+Follow these steps to install and use the Talkscriber Node.js client:
 
-```bash
-tsc ; node dist/talkscriber_client.js
-```
+1. Clone the repository or download the source code.
+
+2. Navigate to the project directory and install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. In `talkscriber_client.ts`, replace `<YOUR_API_KEY>` with your actual Talkscriber API key.
+
+4. Ensure you have a sample WAV file named `example_8k.wav` in the project root directory.
+
+5. Compile the TypeScript code:
+   ```bash
+   npm run build
+   ```
+
+6. Run the client:
+   ```bash
+   npm start
+   ```
+
+This will start the Talkscriber client, which will process the `example_8k.wav` file and output the transcription.
 
 Please note that the provided code is agnostic towards the sample rate and should be able to handle 
 any .wav file/buffer that is pcm_s16le encoded.
