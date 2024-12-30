@@ -53,6 +53,13 @@ async function main() {
         await streamAudioData(audioData, 4096, sampleRate, talkscriber);
     } catch (err) {
         console.error('Error:', err instanceof Error ? err.message : String(err));
+        if (err instanceof Error) {
+            if (err.message.includes('Authentication failed')) {
+                console.error('Please check your API key and try again.');
+            } else if (err.message.includes('Connection closed unexpectedly')) {
+                console.error('The connection was closed. Please check your internet connection and try again.');
+            }
+        }
         process.exit(1);
     } finally {
         // Close the service when done
