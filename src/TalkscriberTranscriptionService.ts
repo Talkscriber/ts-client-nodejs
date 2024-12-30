@@ -71,7 +71,6 @@ export class TalkscriberTranscriptionService extends EventEmitter {
           this.emit("error", error);
           this.close();
           reject(error);
-          process.exit(1); // Exit immediately on authentication failure
           return;
         }
 
@@ -109,7 +108,6 @@ export class TalkscriberTranscriptionService extends EventEmitter {
           const error = new Error(errorMessage);
           this.emit("error", error);
           reject(error);
-          process.exit(1); // Exit immediately on authentication failure
         } else if (code === 1000) {
           errorMessage = "Connection closed normally.";
           console.log(errorMessage);
