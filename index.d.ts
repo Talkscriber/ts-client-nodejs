@@ -1,12 +1,16 @@
-declare class YourClientModule {
-  constructor(options: YourClientModuleOptions);
-  connect(): void;
-  disconnect(): void;
-  // Add other method declarations as needed
+import { EventEmitter } from 'events';
+
+interface TalkscriberOptions {
+  apiKey: string;
+  language?: "en" | "ar";
+  onTranscription?: (text: string) => void;
+  onUtterance?: (text: string) => void;
 }
 
-interface YourClientModuleOptions {
-  // Define your options interface
+declare class TalkscriberTranscriptionService extends EventEmitter {
+  constructor(options: TalkscriberOptions);
+  send(payload: Float32Array, sampleRate: number): void;
+  close(): void;
 }
 
-export = YourClientModule;
+export = TalkscriberTranscriptionService;
