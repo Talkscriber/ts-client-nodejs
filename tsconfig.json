@@ -13,6 +13,6 @@
     "allowJs": true,
     "noImplicitAny": false
   },
-  "include": ["src/**/*.ts", "examples/talkscriber_client.ts"],
+  "include": ["src/**/*.ts", "examples/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
