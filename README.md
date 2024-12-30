@@ -3,9 +3,9 @@
 </h3>
 
 # About ts-client
-Talkscriber offers a state-of-the-art Speech-to-Text (STT) platform tailored for conversational AI enterprises. It provides exceptional transcription services with a strong emphasis on privacy and security to enhance customer communication while protecting their sensitive information. 
+ts-client is the official TypeScript client for Talkscriber, a state-of-the-art Speech-to-Text (STT) platform tailored for conversational AI enterprises. It provides exceptional transcription services with a strong emphasis on privacy and security to enhance customer communication while protecting sensitive information.
 
-# Key Features
+# Key Features of Talkscriber
 - **A Word Error Rate (WER) of less than 4%**
 - **Very low latency (under 150 ms)**
 - **Support for 50+ languages**

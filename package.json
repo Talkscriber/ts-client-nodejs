@@ -1,7 +1,7 @@
 {
-  "name": "talkscriber-ts-client",
+  "name": "ts-client",
   "version": "1.0.0",
-  "description": "A professional client module for Talkscriber",
+  "description": "A professional TypeScript client module for Talkscriber",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
