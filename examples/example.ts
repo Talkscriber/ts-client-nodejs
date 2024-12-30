@@ -34,6 +34,7 @@ async function main() {
     // Create TalkscriberTranscriptionService instance
     const talkscriber = new TalkscriberTranscriptionService({
         apiKey: 'YOUR_API_KEY_HERE', // Replace with your actual Talkscriber API key
+        //apiKey: 'ALLbolf7H9nAo88ypkfwYLytOH9fosKMXpZcc-uZlhA', // Replace with your actual Talkscriber API key
         language: 'en',
         onTranscription: (text: string) => {
             console.log('Transcription:', text);
