@@ -12,9 +12,9 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "allowJs": false,
-    "noImplicitAny": true
+    "allowJs": true,
+    "noImplicitAny": false
   },
-  "include": ["src/**/*.ts", "examples/**/*.ts", "*.d.ts"],
+  "include": ["src/**/*.ts", "src/**/*.js", "examples/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
