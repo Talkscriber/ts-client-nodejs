@@ -52,13 +52,20 @@ export class TalkscriberTranscriptionService extends EventEmitter {
   private onMessage(unparsedMessage: string) {
     const msg = JSON.parse(unparsedMessage) as {
       session_id: string;
-      status: "WAIT";
-      message: "DISCONNECT" | "SERVER_READY";
+      status: "WAIT" | "ERROR";
+      message: "DISCONNECT" | "SERVER_READY" | "UNAUTHORIZED";
       language: string;
       detected_language: string;
       language_confidence: number;
       segments: { text: string }[];
     };
+
+    if (msg.status === "ERROR" && msg.message === "UNAUTHORIZED") {
+      const error = new Error("Authentication failed. Please check your API key.");
+      this.emit("error", error);
+      this.close();
+      return;
+    }
 
     if (this.uid !== msg.session_id) this.uid = msg.session_id;
     if (!msg.segments?.length) return;
