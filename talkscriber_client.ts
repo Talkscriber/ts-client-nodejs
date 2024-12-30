@@ -2,6 +2,8 @@ import * as fs from 'fs';
 import { decode } from 'wav-decoder';
 import { TalkscriberTranscriptionService } from './TalkscriberTranscriptionService';
 
+// Remove any usage of 'colors' in this file if present
+
 const audioFilePath = 'example_8k.wav';
 
 // Function to decode WAV file
