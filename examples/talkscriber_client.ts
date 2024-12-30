@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import { decode } from 'wav-decoder';
 import { TalkscriberTranscriptionService } from '../src/TalkscriberTranscriptionService';
 
-const audioFilePath = 'example_8k.wav';
+const audioFilePath = './examples/sample.wav';
 
 // Function to decode WAV file
 async function decodeWavFile(filePath: string): Promise<[Float32Array, number]> {
