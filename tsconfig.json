@@ -7,15 +7,14 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
-    "rootDir": ".",
+    "rootDir": "./src",
     "moduleResolution": "node",
     "declaration": true,
-    "allowJs": true,
-    "noImplicitAny": false
+    "declarationMap": true,
+    "sourceMap": true,
+    "allowJs": false,
+    "noImplicitAny": true
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "dist", "examples"],
-  "paths": {
-    "@talkscriber-npm/ts-client": ["./src"]
-  }
+  "exclude": ["node_modules", "dist", "examples"]
 }

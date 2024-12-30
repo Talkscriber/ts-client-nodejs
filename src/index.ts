@@ -1,1 +1,1 @@
-export { TalkscriberTranscriptionService } from './TalkscriberTranscriptionService';
+export { TalkscriberTranscriptionService, TalkscriberOptions } from './TalkscriberTranscriptionService';
