@@ -21,7 +21,7 @@ Follow these steps to install and use the ts-client for Talkscriber:
 
 2. In your project, create a new file (e.g., `transcribe.ts`) and add the following code:
    ```typescript
-   import { TalkscriberTranscriptionService } from 'ts-client';
+   import { TalkscriberTranscriptionService } from '../src/TalkscriberTranscriptionService';
 
    const talkscriber = new TalkscriberTranscriptionService({
      apiKey: '<YOUR_API_KEY>',
