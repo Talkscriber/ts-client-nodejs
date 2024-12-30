@@ -9,6 +9,10 @@ interface TalkscriberOptions {
   onUtterance?: (text: string) => void;
 }
 
+/**
+ * TalkscriberTranscriptionService class for real-time audio transcription.
+ * @extends EventEmitter
+ */
 export class TalkscriberTranscriptionService extends EventEmitter {
   private ws: WebSocket;
   private finalResult: string = "";
@@ -16,6 +20,10 @@ export class TalkscriberTranscriptionService extends EventEmitter {
   private uid: string;
   private options: TalkscriberOptions;
 
+  /**
+   * Creates a new TalkscriberTranscriptionService instance.
+   * @param {TalkscriberOptions} options - Configuration options for the service.
+   */
   constructor(options: TalkscriberOptions) {
     super();
     this.options = options;
@@ -71,14 +79,22 @@ export class TalkscriberTranscriptionService extends EventEmitter {
     this.emit("error", error);
   }
 
-  public send(payload: Float32Array, sampleRate: number) {
+  /**
+   * Sends audio data to the transcription service.
+   * @param {Float32Array} payload - The audio data to send.
+   * @param {number} sampleRate - The sample rate of the audio data.
+   */
+  public send(payload: Float32Array, sampleRate: number): void {
     if (this.ws.readyState === WebSocket.OPEN) {
       const resampledData = resampleTo16kHZ(payload, sampleRate);
       this.ws.send(resampledData.buffer);
     }
   }
 
-  public close() {
+  /**
+   * Closes the WebSocket connection to the transcription service.
+   */
+  public close(): void {
     return this.ws.close();
   }
 }
