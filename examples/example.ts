@@ -1,4 +1,4 @@
-import { TalkscriberTranscriptionService } from 'ts-client';
+import { TalkscriberTranscriptionService } from '../src/TalkscriberTranscriptionService';
 import * as fs from 'fs';
 import * as wavDecoder from 'wav-decoder';
 
