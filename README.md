@@ -24,8 +24,7 @@ Follow these steps to install and use the ts-client for Talkscriber:
    import { TalkscriberTranscriptionService } from 'ts-client';
 
    const talkscriber = new TalkscriberTranscriptionService({
-     agent: null,
-     integration: { auth: { api_key: '<YOUR_API_KEY>' } },
+     apiKey: '<YOUR_API_KEY>',
      onTranscription: (text: string) => {
        console.log('Transcription:', text);
      },
@@ -47,7 +46,30 @@ Follow these steps to install and use the ts-client for Talkscriber:
 
 This will initialize the Talkscriber client. You'll need to add your own audio processing logic to send audio data to the `talkscriber.send()` method.
 
-For a complete example of audio file processing, refer to the `talkscriber_client.ts` file in the package source code.
+For complete examples of audio file processing, refer to the `examples` directory in the package source code.
+
+## Running the Examples
+
+To run the provided examples:
+
+1. Navigate to the `examples` directory:
+   ```bash
+   cd examples
+   ```
+
+2. Install the required dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Run the example of your choice:
+   ```bash
+   ts-node talkscriber_client.ts
+   ```
+   or
+   ```bash
+   ts-node example.ts
+   ```
 
 Please note that the provided code is agnostic towards the sample rate and should be able to handle 
 any .wav file/buffer that is pcm_s16le encoded.
