@@ -170,3 +170,6 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 .aider*
+
+# Node.js dependencies
+node_modules/
