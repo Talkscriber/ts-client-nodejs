@@ -62,13 +62,9 @@ To run the provided examples:
    npm install
    ```
 
-3. Run the example of your choice:
+3. Run the example:
    ```bash
    ts-node talkscriber_client.ts
-   ```
-   or
-   ```bash
-   ts-node example.ts
    ```
 
 Please note that the provided code is agnostic towards the sample rate and should be able to handle 
