@@ -69,8 +69,8 @@ export class TalkscriberTranscriptionService extends EventEmitter {
           const error = new Error("Authentication failed. Please check your API key.");
           console.error("Authentication failed. Please check your API key.");
           this.emit("error", error);
-          reject(error);
           this.close();
+          reject(error);
           return;
         }
 
@@ -85,8 +85,8 @@ export class TalkscriberTranscriptionService extends EventEmitter {
           const error = new Error(`Server error: ${msg.message}`);
           console.error(`Server error: ${msg.message}`);
           this.emit("error", error);
-          reject(error);
           this.close();
+          reject(error);
           return;
         }
 
@@ -96,6 +96,7 @@ export class TalkscriberTranscriptionService extends EventEmitter {
       this.ws.on("error", (error: Error) => {
         console.error("STT -> Talkscriber error", error);
         this.emit("error", error);
+        this.close();
         reject(error);
       });
 
@@ -116,16 +117,16 @@ export class TalkscriberTranscriptionService extends EventEmitter {
         }
       });
 
-      // Add a timeout to handle cases where the server doesn't respond
+      // Reduce timeout to 5 seconds
       setTimeout(() => {
         if (!authResponseReceived) {
           const error = new Error("Connection timed out. No response from server.");
           console.error("Connection timed out. No response from server.");
           this.emit("error", error);
-          reject(error);
           this.close();
+          reject(error);
         }
-      }, 10000); // 10 seconds timeout
+      }, 5000); // 5 seconds timeout
     });
   }
 
