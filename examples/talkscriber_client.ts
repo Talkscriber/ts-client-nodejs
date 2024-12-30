@@ -60,13 +60,8 @@ async function main() {
                 console.error('The connection was closed. Please check your internet connection and try again.');
             }
         }
+        talkscriber.close();
         process.exit(1);
-    } finally {
-        // Close the service when done
-        setTimeout(() => {
-            talkscriber.close();
-            console.log('Service closed');
-        }, 5000);
     }
 }
 
