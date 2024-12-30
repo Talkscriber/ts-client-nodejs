@@ -45,6 +45,7 @@ async function main() {
 
     // Process and stream the audio
     try {
+        console.log('Connecting to Talkscriber service...');
         await talkscriber.connect();
         console.log('Connected and authenticated successfully');
         const [audioData, sampleRate] = await decodeWavFile(audioFilePath);
@@ -54,8 +55,8 @@ async function main() {
         if (err instanceof Error) {
             if (err.message.includes('Authentication failed')) {
                 console.error('Please check your API key and try again.');
-            } else if (err.message.includes('Connection timed out')) {
-                console.error('The server did not respond in time. Please check your internet connection and try again.');
+            } else if (err.message.includes('Connection timed out') || err.message.includes('closed unexpectedly')) {
+                console.error('The server did not respond or the connection was closed. Please check your internet connection and try again.');
             }
         }
         process.exit(1);
