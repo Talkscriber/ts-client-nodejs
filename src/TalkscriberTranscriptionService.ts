@@ -49,6 +49,63 @@ export class TalkscriberTranscriptionService extends EventEmitter {
         this.ws!.send(JSON.stringify({
           uid: this.uid,
           multilingual: false,
+          language: this.options.language,
+          task: "transcribe",
+          auth: this.options.apiKey,
+        }));
+      });
+
+      this.ws.on("message", (unparsedMessage: string) => {
+        const msg = JSON.parse(unparsedMessage);
+        if (msg.message === "SERVER_READY") {
+          this.isAuthenticated = true;
+          console.log("Authentication successful");
+          resolve();
+        } else if (msg.status === "ERROR") {
+          const error = new Error(`Server error: ${msg.message}`);
+          this.emit("error", error);
+          reject(error);
+        }
+      });
+
+      this.ws.on("error", (error: Error) => {
+        console.error("STT -> Talkscriber error", error);
+        this.emit("error", error);
+        reject(error);
+      });
+
+      this.ws.on("close", (code: number, reason: string) => {
+        if (!this.isAuthenticated) {
+          const error = new Error(`Connection closed before authentication. Code: ${code}`);
+          this.emit("error", error);
+          reject(error);
+        }
+      });
+
+      // Set a timeout for the connection
+      setTimeout(() => {
+        if (!this.isAuthenticated) {
+          const error = new Error("Connection timed out");
+          this.emit("error", error);
+          reject(error);
+        }
+      }, 5000); // 5 seconds timeout
+    });
+  }
+
+  /**
+   * Connects to the Talkscriber service and authenticates.
+   * @returns {Promise<void>} A promise that resolves when connected and authenticated.
+   */
+  public async connect(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.ws = new WebSocket(this.options.endpoint);
+
+      this.ws.on("open", () => {
+        console.log("STT -> Talkscriber connection opened");
+        this.ws!.send(JSON.stringify({
+          uid: this.uid,
+          multilingual: false,
           language: this.options.language || "en",
           task: "transcribe",
           auth: this.options.apiKey,
