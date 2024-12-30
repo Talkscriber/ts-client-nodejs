@@ -27,7 +27,7 @@ async function streamAudioData(audioData: Float32Array, chunkSize: number, sampl
 
 async function main() {
     const talkscriber = new TalkscriberTranscriptionService({
-        apiKey: 'ALLbolf7H9nAo88ypkfwYLytOH9fosKMXpZcc-uZlhA',
+        apiKey: '<YOUR_API_KEY>',
         language: 'en',
         onTranscription: (text: string) => console.log('Transcription:', text),
         onUtterance: (text: string) => console.log('Utterance:', text)
