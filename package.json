@@ -1,5 +1,5 @@
 {
-  "name": "@talkscriber-npm/ts-client",
+  "name": "@talkscriber/ts-client",
   "version": "1.0.4",
   "description": "A JS/TypeScript client module for Talkscriber",
   "main": "dist/index.js",
