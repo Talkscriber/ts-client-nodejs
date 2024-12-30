@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import { decode } from 'wav-decoder';
-import { TalkscriberTranscriptionService } from './TalkscriberTranscriptionService';
+import { TalkscriberTranscriptionService } from '../src/TalkscriberTranscriptionService';
 
 const audioFilePath = 'example_8k.wav';
 
