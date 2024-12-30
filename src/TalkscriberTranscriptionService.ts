@@ -14,11 +14,12 @@ interface TalkscriberOptions {
  * @extends EventEmitter
  */
 export class TalkscriberTranscriptionService extends EventEmitter {
-  private ws: WebSocket;
+  private ws: WebSocket | null = null;
   private finalResult: string = "";
   private speechFinal: boolean = false;
   private uid: string;
   private options: TalkscriberOptions;
+  private isAuthenticated: boolean = false;
 
   /**
    * Creates a new TalkscriberTranscriptionService instance.
@@ -28,49 +29,68 @@ export class TalkscriberTranscriptionService extends EventEmitter {
     super();
     this.options = options;
     this.uid = randomUUID();
-    this.ws = new WebSocket("wss://api.talkscriber.com:9090");
-    this.setupWebSocket();
   }
 
-  private setupWebSocket() {
-    this.ws.on("open", this.onOpen.bind(this));
-    this.ws.on("message", this.onMessage.bind(this));
-    this.ws.on("error", this.onError.bind(this));
+  /**
+   * Connects to the Talkscriber service and authenticates.
+   * @returns {Promise<void>} A promise that resolves when connected and authenticated.
+   */
+  public async connect(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.ws = new WebSocket("wss://api.talkscriber.com:9090");
+
+      this.ws.on("open", () => {
+        console.log("STT -> Talkscriber connection opened");
+        this.ws!.send(JSON.stringify({
+          uid: this.uid,
+          multilingual: false,
+          language: this.options.language || "en",
+          task: "transcribe",
+          auth: this.options.apiKey,
+        }));
+      });
+
+      this.ws.on("message", (unparsedMessage: string) => {
+        const msg = JSON.parse(unparsedMessage) as {
+          session_id: string;
+          status: "WAIT" | "ERROR";
+          message: "DISCONNECT" | "SERVER_READY" | "UNAUTHORIZED";
+          language: string;
+          detected_language: string;
+          language_confidence: number;
+          segments: { text: string }[];
+        };
+
+        if (msg.status === "ERROR" && msg.message === "UNAUTHORIZED") {
+          const error = new Error("Authentication failed. Please check your API key.");
+          this.emit("error", error);
+          reject(error);
+          this.close();
+          return;
+        }
+
+        if (msg.message === "SERVER_READY") {
+          this.isAuthenticated = true;
+          console.log("Authentication successful");
+          resolve();
+        }
+
+        this.handleMessage(msg);
+      });
+
+      this.ws.on("error", (error: Error) => {
+        console.error("STT -> Talkscriber error", error);
+        this.emit("error", error);
+        reject(error);
+      });
+    });
   }
 
-  private onOpen() {
-    console.log("STT -> Talkscriber connection opened");
-    this.ws.send(JSON.stringify({
-      uid: this.uid,
-      multilingual: false,
-      language: this.options.language || "en",
-      task: "transcribe",
-      auth: this.options.apiKey,
-    }));
-  }
-
-  private onMessage(unparsedMessage: string) {
-    const msg = JSON.parse(unparsedMessage) as {
-      session_id: string;
-      status: "WAIT" | "ERROR";
-      message: "DISCONNECT" | "SERVER_READY" | "UNAUTHORIZED";
-      language: string;
-      detected_language: string;
-      language_confidence: number;
-      segments: { text: string }[];
-    };
-
-    if (msg.status === "ERROR" && msg.message === "UNAUTHORIZED") {
-      const error = new Error("Authentication failed. Please check your API key.");
-      this.emit("error", error);
-      this.close();
-      return;
-    }
-
+  private handleMessage(msg: any) {
     if (this.uid !== msg.session_id) this.uid = msg.session_id;
     if (!msg.segments?.length) return;
 
-    msg.segments.forEach((segment) => {
+    msg.segments.forEach((segment: { text: string }) => {
       this.options.onUtterance?.(segment.text);
       this.finalResult += ` ${segment.text}`;
     });
@@ -81,20 +101,20 @@ export class TalkscriberTranscriptionService extends EventEmitter {
     this.finalResult = "";
   }
 
-  private onError(error: Error) {
-    console.error("STT -> Talkscriber error", error);
-    this.emit("error", error);
-  }
-
   /**
    * Sends audio data to the transcription service.
    * @param {Float32Array} payload - The audio data to send.
    * @param {number} sampleRate - The sample rate of the audio data.
    */
   public send(payload: Float32Array, sampleRate: number): void {
-    if (this.ws.readyState === WebSocket.OPEN) {
+    if (!this.isAuthenticated) {
+      throw new Error("Not authenticated. Call connect() first.");
+    }
+    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
       const resampledData = resampleTo16kHZ(payload, sampleRate);
       this.ws.send(resampledData.buffer);
+    } else {
+      throw new Error("WebSocket is not open. Call connect() first.");
     }
   }
 
@@ -102,7 +122,11 @@ export class TalkscriberTranscriptionService extends EventEmitter {
    * Closes the WebSocket connection to the transcription service.
    */
   public close(): void {
-    return this.ws.close();
+    if (this.ws) {
+      this.ws.close();
+      this.ws = null;
+    }
+    this.isAuthenticated = false;
   }
 }
 

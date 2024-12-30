@@ -45,6 +45,8 @@ async function main() {
 
     // Process and stream the audio
     try {
+        await talkscriber.connect();
+        console.log('Connected and authenticated successfully');
         const [audioData, sampleRate] = await decodeWavFile(audioFilePath);
         await streamAudioData(audioData, 4096, sampleRate, talkscriber);
     } catch (err) {

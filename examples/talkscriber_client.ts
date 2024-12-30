@@ -44,14 +44,16 @@ const talkscriber = new TalkscriberTranscriptionService({
 });
 
 // Process and stream the audio
-setTimeout(async () => {
+(async () => {
     try {
+        await talkscriber.connect();
+        console.log('Connected and authenticated successfully');
         const [audioData, sampleRate] = await decodeWavFile(audioFilePath);
         await streamAudioData(audioData, 4096, sampleRate);
     } catch (err) {
         console.error('Failed to process audio:', err);
     }
-}, 1000);
+})();
 
 // Handle cleanup
 process.on('SIGINT', () => {
