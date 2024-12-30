@@ -33,10 +33,8 @@ async function streamAudioData(audioData: Float32Array, chunkSize: number, sampl
 async function main() {
     // Create TalkscriberTranscriptionService instance
     const talkscriber = new TalkscriberTranscriptionService({
-        //apiKey: 'YOUR_API_KEY_HERE', // Replace this with your actual Talkscriber API key
         apiKey: 'ALLbolf7H9nAo88ypkfwYLytOH9fosKMXpZcc-uZlhA',
-        language: 'en', // This is now optional, 'en' is the default
-        endpoint: 'wss://api.talkscriber.com:9090', // This is now optional, the shown value is the default
+        language: 'en',
         onTranscription: (text: string) => {
             console.log('Transcription:', text);
         },
@@ -61,15 +59,9 @@ async function main() {
                 console.error('The connection was closed. Please check your internet connection and try again.');
             }
         }
+    } finally {
+        talkscriber.close();
     }
-    talkscriber.close();
-    process.exit(1);
 }
-
-// Handle cleanup
-process.on('SIGINT', () => {
-    console.log('Received SIGINT. Exiting...');
-    process.exit();
-});
 
 main().catch(console.error);
