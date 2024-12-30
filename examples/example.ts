@@ -5,7 +5,7 @@ import * as wavDecoder from 'wav-decoder';
 async function main() {
     // Initialize the TalkscriberTranscriptionService
     const service = new TalkscriberTranscriptionService({
-        apiKey: 'YOUR_API_KEY_HERE',
+        apiKey: 'ALLbolf7H9nAo88ypkfwYLytOH9fosKMXpZcc-uZlhA',
         language: 'en',
         onTranscription: (text) => console.log('Transcription:', text),
         onUtterance: (text) => console.log('Utterance:', text)
