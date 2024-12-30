@@ -7,17 +7,22 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["client", "websocket", "audio"],
+  "keywords": [
+    "client",
+    "websocket",
+    "audio"
+  ],
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
+    "color": "^4.2.3",
     "colors": "^1.4.0",
     "wav-decoder": "^1.3.0",
     "ws": "^8.18.0"
   },
   "devDependencies": {
-    "@types/ws": "^8.5.13",
     "@types/node": "^20.10.0",
+    "@types/ws": "^8.5.13",
     "typescript": "^5.0.0"
   },
   "engines": {
