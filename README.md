@@ -19,7 +19,7 @@ Follow these steps to get started:
 3. Run the code using the following commands:
 
 ```bash
-tsc && node [talkscriber_client.js](http://_vscodecontentref_/1)
+tsc ; node dist/talkscriber_client.js
 ```
 
 Please note that the provided code is agnostic towards the sample rate and should be able to handle 
@@ -27,8 +27,8 @@ any .wav file/buffer that is pcm_s16le encoded.
 
 # Supported Languages
 The Talkscriber engine handles the following languages:
-"en": "english",
-"zh": "chinese"
+- "en": "english",
+- "zh": "chinese"
 "de": "german"
 "es": "spanish"
 "ru": "russian"
