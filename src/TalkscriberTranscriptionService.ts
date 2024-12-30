@@ -71,6 +71,7 @@ export class TalkscriberTranscriptionService extends EventEmitter {
           this.emit("error", error);
           this.close();
           reject(error);
+          process.exit(1); // Exit immediately on authentication failure
           return;
         }
 
@@ -104,16 +105,22 @@ export class TalkscriberTranscriptionService extends EventEmitter {
         let errorMessage = "Connection closed unexpectedly.";
         if (code === 1000 && !this.isAuthenticated) {
           errorMessage = "Authentication failed. Please check your API key.";
-        } else if (code === 1000) {
-          errorMessage = "Connection closed normally.";
-        } else {
-          errorMessage += ` (Code: ${code}) Please check your internet connection and try again.`;
-        }
-        console.error(errorMessage);
-        if (!authResponseReceived) {
+          console.error(errorMessage);
           const error = new Error(errorMessage);
           this.emit("error", error);
           reject(error);
+          process.exit(1); // Exit immediately on authentication failure
+        } else if (code === 1000) {
+          errorMessage = "Connection closed normally.";
+          console.log(errorMessage);
+        } else {
+          errorMessage += ` (Code: ${code}) Please check your internet connection and try again.`;
+          console.error(errorMessage);
+          if (!authResponseReceived) {
+            const error = new Error(errorMessage);
+            this.emit("error", error);
+            reject(error);
+          }
         }
       });
 
