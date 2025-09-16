@@ -8,6 +8,8 @@ export interface TalkscriberOptions {
   endpoint?: string;
   onTranscription?: (text: string) => void;
   onUtterance?: (text: string) => void;
+  enableTurnDetection?: boolean;
+  turnDetectionTimeout?: number;
 }
 
 /**
@@ -19,7 +21,7 @@ export class TalkscriberTranscriptionService extends EventEmitter {
   private finalResult: string = "";
   private speechFinal: boolean = false;
   private uid: string;
-  private options: TalkscriberOptions & { endpoint: string; language: string };
+  private options: TalkscriberOptions & { endpoint: string; language: string; enableTurnDetection: boolean; turnDetectionTimeout: number };
   private isAuthenticated: boolean = false;
 
   /**
@@ -31,7 +33,9 @@ export class TalkscriberTranscriptionService extends EventEmitter {
     this.options = {
       ...options,
       endpoint: options.endpoint || "wss://api.talkscriber.com:9090",
-      language: options.language || "en"
+      language: options.language || "en",
+      enableTurnDetection: options.enableTurnDetection || false,
+      turnDetectionTimeout: options.turnDetectionTimeout || 0.6
     };
     this.uid = randomUUID();
   }
@@ -53,6 +57,8 @@ export class TalkscriberTranscriptionService extends EventEmitter {
           language: this.options.language || "en",
           task: "transcribe",
           auth: this.options.apiKey,
+          enable_turn_detection: this.options.enableTurnDetection,
+          turn_detection_timeout: this.options.turnDetectionTimeout
         }));
       });
 
@@ -66,7 +72,7 @@ export class TalkscriberTranscriptionService extends EventEmitter {
           language: string;
           detected_language: string;
           language_confidence: number;
-          segments: { text: string }[];
+          segments: { text: string; EOS?: boolean }[];
         };
 
         authResponseReceived = true;
@@ -145,9 +151,15 @@ export class TalkscriberTranscriptionService extends EventEmitter {
     if (this.uid !== msg.session_id) this.uid = msg.session_id;
     if (!msg.segments?.length) return;
 
-    msg.segments.forEach((segment: { text: string }) => {
+    msg.segments.forEach((segment: { text: string; EOS?: boolean }) => {
       this.options.onUtterance?.(segment.text);
       this.finalResult += ` ${segment.text}`;
+      
+      // Check for End of Speech detection
+      if (segment.EOS) {
+        console.log("[INFO]: --------End of speech detected----------");
+        this.emit("endOfSpeech", this.finalResult.trim());
+      }
     });
 
     this.speechFinal = true;

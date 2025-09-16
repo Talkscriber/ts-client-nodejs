@@ -6,6 +6,8 @@ export interface TalkscriberOptions {
   endpoint?: string;
   onTranscription?: (text: string) => void;
   onUtterance?: (text: string) => void;
+  enableTurnDetection?: boolean;
+  turnDetectionTimeout?: number;
 }
 
 export class TalkscriberTranscriptionService extends EventEmitter {
@@ -31,4 +33,5 @@ export class TalkscriberTranscriptionService extends EventEmitter {
 
   on(event: 'transcription', listener: (text: string) => void): this;
   on(event: 'error', listener: (error: Error) => void): this;
+  on(event: 'endOfSpeech', listener: (text: string) => void): this;
 }

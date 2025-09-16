@@ -24,16 +24,18 @@ Follow these steps to install and use the ts-client for Talkscriber:
    import { TalkscriberTranscriptionService } from '@talkscriber-npm/ts-client';
 
    async function main() {
-     const talkscriber = new TalkscriberTranscriptionService({
-       apiKey: '<YOUR_API_KEY>',
-       language: 'en', // Specify the language here (e.g., 'en' for English)
-       onTranscription: (text: string) => {
-         console.log('Transcription:', text);
-       },
-       onUtterance: (text: string) => {
-         console.log('Utterance:', text);
-       }
-     });
+   const talkscriber = new TalkscriberTranscriptionService({
+     apiKey: '<YOUR_API_KEY>',
+     language: 'en', // Specify the language here (e.g., 'en' for English)
+     enableTurnDetection: true, // Enable smart turn detection using ML model
+     turnDetectionTimeout: 0.6, // Timeout threshold for end-of-speech detection in seconds
+     onTranscription: (text: string) => {
+       console.log('Transcription:', text);
+     },
+     onUtterance: (text: string) => {
+       console.log('Utterance:', text);
+     }
+   });
 
      try {
        await talkscriber.connect();
@@ -71,25 +73,99 @@ This will initialize the Talkscriber client and connect to the service. You'll n
 
 For complete examples of audio file processing, refer to the `examples` directory in the package source code.
 
+## Smart Turn Detection
+
+The client supports advanced turn detection using machine learning for better endpoint detection:
+
+- **enableTurnDetection** (boolean, default: false): Enables smart turn detection using ML model for better endpoint detection
+- **turnDetectionTimeout** (number, default: 0.6): Timeout threshold for end-of-speech detection in seconds (fallback when ML model confidence is low)
+
+When `enableTurnDetection` is set to `true`, the system uses an ML model to predict turn completion in addition to the standard timeout-based method. This provides:
+- Improved accuracy over time-based thresholds alone
+- Context awareness of speech patterns
+- Reduced false positives
+- Adaptive behavior across different speakers and languages
+
+You can listen for end-of-speech events:
+
+```typescript
+talkscriber.on('endOfSpeech', (text: string) => {
+  console.log('End of speech detected for:', text);
+});
+```
+
 ## Running the Examples
 
-To run the provided examples:
+The project includes a complete example that demonstrates how to use the Talkscriber client with audio file processing. Here's how to run it:
 
-1. Ensure you're in the root directory of the project where `package.json` is located.
+### Prerequisites
 
-2. Install the required dependencies if you haven't already:
+1. **Get your API Key**: First, you need to obtain your Talkscriber API key from the [Talkscriber dashboard](https://app.talkscriber.com).
+
+2. **Audio File**: The example uses a sample audio file located at `examples/sample.wav`. You can replace this with your own audio file if needed.
+
+### Step-by-Step Instructions
+
+1. **Navigate to the project directory**:
+   ```bash
+   cd /path/to/ts-client-nodejs
+   ```
+
+2. **Install the required dependencies**:
    ```bash
    npm install
    ```
 
-3. Run the example:
+3. **Configure your API key**:
+   - Open the file `examples/talkscriber_client.ts`
+   - Find line 30 where it says `apiKey: '<YOUR_API_KEY>'`
+   - Replace `<YOUR_API_KEY>` with your actual API key:
+   ```typescript
+   const talkscriber = new TalkscriberTranscriptionService({
+     apiKey: 'your-actual-api-key-here', // Replace this with your real API key
+     language: 'en',
+     enableTurnDetection: true,
+     turnDetectionTimeout: 0.6,
+     // ... rest of configuration
+   });
+   ```
+
+4. **Run the example**:
    ```bash
    npm run example
    ```
 
-Please note that you need to replace `<YOUR_API_KEY>` in the example script with your actual Talkscriber API key before running it.
+### Example Code Location
 
-The provided code is agnostic towards the sample rate and should be able to handle any .wav file/buffer that is pcm_s16le encoded.
+The main example code is located in:
+- **File**: `examples/talkscriber_client.ts`
+- **Purpose**: Demonstrates how to transcribe an audio file using the Talkscriber service
+- **Features**: Shows smart turn detection, event handling, and audio streaming
+
+### What the Example Does
+
+The example script will:
+1. Connect to the Talkscriber service using your API key
+2. Load and decode the sample audio file (`examples/sample.wav`)
+3. Stream the audio data to the transcription service
+4. Display real-time transcription results
+5. Show end-of-speech detection events (if enabled)
+
+### Audio File Requirements
+
+The provided code is agnostic towards the sample rate and should be able to handle any .wav file/buffer that is pcm_s16le encoded. You can replace `examples/sample.wav` with your own audio file by:
+
+1. Placing your audio file in the `examples/` directory
+2. Updating the `audioFilePath` variable in `examples/talkscriber_client.ts`:
+   ```typescript
+   const audioFilePath = './examples/your-audio-file.wav';
+   ```
+
+### Troubleshooting
+
+- **Authentication Error**: Make sure you've replaced `<YOUR_API_KEY>` with your actual API key
+- **File Not Found**: Ensure the audio file exists in the `examples/` directory
+- **Connection Issues**: Check your internet connection and verify the API key is valid
 
 # Supported Languages
 The Talkscriber engine handles the following languages:
