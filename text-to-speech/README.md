@@ -9,10 +9,9 @@
   - [2. Silent Mode (No Audio Playback)](#2-silent-mode-no-audio-playback)
   - [3. Audio File Saving](#3-audio-file-saving)
   - [4. Event Handling](#4-event-handling)
-- [Running the Examples](#running-the-examples)
+- [Running the Example](#running-the-example)
   - [Prerequisites](#prerequisites)
   - [Step-by-Step Instructions](#step-by-step-instructions)
-  - [Example Code Location](#example-code-location)
   - [What the Example Does](#what-the-example-does)
 - [License](#license)
 
@@ -201,7 +200,7 @@ The project includes a complete example that demonstrates how to use the TalkScr
    ```bash
    npm run example
    ```
-For Detailed documents refer to our [doc webpage]{https://docs.talkscriber.com/docs/}.
+For detailed documentation, refer to our [documentation webpage](https://docs.talkscriber.com/docs/).
 
 
 
