@@ -1,21 +1,3 @@
-## Table of Contents
-
-- [About ts-client-tts](#about-ts-client-tts)
-- [Installation and Getting Started](#installation-and-getting-started)
-- [Supported Audio Formats](#supported-audio-formats)
-- [Configuration Options](#configuration-options)
-- [Usage Patterns](#usage-patterns)
-  - [1. Basic Usage with Playback](#1-basic-usage-with-playback)
-  - [2. Silent Mode (No Audio Playback)](#2-silent-mode-no-audio-playback)
-  - [3. Audio File Saving](#3-audio-file-saving)
-  - [4. Event Handling](#4-event-handling)
-- [Running the Example](#running-the-example)
-  - [Prerequisites](#prerequisites)
-  - [Step-by-Step Instructions](#step-by-step-instructions)
-  - [What the Example Does](#what-the-example-does)
-- [License](#license)
-
-
 # 🎙️ About ts-client-tts
 
 This is the official TypeScript client for TalkScriber Text-to-Speech (TTS), a state-of-the-art TTS platform tailored for conversational AI enterprises. It provides exceptional speech synthesis services with ultra-low latency streaming and a strong emphasis on privacy and security.
