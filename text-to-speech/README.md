@@ -16,20 +16,20 @@
 - [License](#license)
 
 
-# About ts-client-tts
+# 🎙️ About ts-client-tts
 
 This is the official TypeScript client for TalkScriber Text-to-Speech (TTS), a state-of-the-art TTS platform tailored for conversational AI enterprises. It provides exceptional speech synthesis services with ultra-low latency streaming and a strong emphasis on privacy and security.
 
-# Installation and Getting Started
+# 🚀 Installation and Getting Started
 
 Follow these steps to install and use the ts-client-tts for TalkScriber:
 
-1. Install the package:
+1. 📦 Install the package:
    ```bash
    npm install @talkscriber-npm/ts-client-tts
    ```
 
-2. In your project, create a new file (e.g., `tts_example.ts`) and add the following code:
+2. 📝 In your project, create a new file (e.g., `tts_example.ts`) and add the following code:
    ```typescript
    import { TalkScriberTTSService } from '@talkscriber-npm/ts-client-tts';
 
@@ -64,30 +64,30 @@ Follow these steps to install and use the ts-client-tts for TalkScriber:
    main().catch(console.error);
    ```
 
-3. Replace `<YOUR_API_KEY>` with your actual TalkScriber API key.
+3. 🔑 Replace `<YOUR_API_KEY>` with your actual TalkScriber API key.
 
-4. Install the necessary TypeScript dependencies if you haven't already:
+4. ⚙️ Install the necessary TypeScript dependencies if you haven't already:
    ```bash
    npm install -D typescript ts-node @types/node
    ```
 
-5. Compile and run your TypeScript code:
+5. ▶️ Compile and run your TypeScript code:
    ```bash
    npx ts-node tts_example.ts
    ```
 
-This will initialize the TalkScriber TTS client and connect to the service. The audio will start playing in less than 0.1 seconds with ultra-low latency streaming.
+This will initialize the TalkScriber TTS client and connect to the service. The audio will start playing in less than 0.1 seconds with ultra-low latency streaming. ⚡
 
 For complete examples of TTS usage, refer to the `examples` directory in the package source code.
 
-## Supported Audio Formats
+## 🔊 Supported Audio Formats
 
 - **Sample Rate**: 24kHz (matches server configuration)
 - **Channels**: Mono (1 channel)
 - **Bit Depth**: 16-bit PCM
 - **Protocol**: WebSocket binary streaming
 
-## Configuration Options
+## ⚙️ Configuration Options
 
 | Setting | Default | Description |
 |---------|---------|-------------|
@@ -96,9 +96,9 @@ For complete examples of TTS usage, refer to the `examples` directory in the pac
 | `speakerName` | `"tara"` | Voice to use for speech synthesis |
 | `endpoint` | `"wss://api.talkscriber.com:9099"` | TTS server endpoint |
 
-## Usage Patterns
+## 💡 Usage Patterns
 
-### 1. Basic Usage with Playback
+### 1. 🎵 Basic Usage with Playback
 
 ```typescript
 const ttsClient = new TalkScriberTTSService({
@@ -111,7 +111,7 @@ await ttsClient.connect();
 ttsClient.sendSpeakRequest("Hello, world!");
 ```
 
-### 2. Silent Mode (No Audio Playback)
+### 2. 🔇 Silent Mode (No Audio Playback)
 
 ```typescript
 // Useful for testing or when you only want to save audio
@@ -125,7 +125,7 @@ const ttsClient = new TalkScriberTTSService({
 await ttsClient.runSimpleTest("This will be saved but not played.");
 ```
 
-### 3. Audio File Saving
+### 3. 💾 Audio File Saving
 
 ```typescript
 // Save audio to file with playback
@@ -139,7 +139,7 @@ const ttsClient = new TalkScriberTTSService({
 await ttsClient.runSimpleTest("This will be played and saved.");
 ```
 
-### 4. Event Handling
+### 4. 📡 Event Handling
 
 ```typescript
 const ttsClient = new TalkScriberTTSService({
@@ -161,29 +161,29 @@ ttsClient.on('audioChunk', (chunk: Buffer) => {
 });
 ```
 
-## Running the Example
+## 🏃‍♂️ Running the Example
 
 The project includes a complete example that demonstrates how to use the TalkScriber TTS client. Here's how to run it:
 
-### Prerequisites
+### 📋 Prerequisites
 
-1. **Get your API Key**: First, you need to obtain your TalkScriber API key from the [TalkScriber dashboard](https://app.talkscriber.com).
+1. 🔑 **Get your API Key**: First, you need to obtain your TalkScriber API key from the [TalkScriber dashboard](https://app.talkscriber.com).
 
-2. **Audio Output**: The example will play audio through your system's default audio output device.
+2. 🔊 **Audio Output**: The example will play audio through your system's default audio output device.
 
-### Step-by-Step Instructions
+### 📝 Step-by-Step Instructions
 
-1. **Make sure you are in the text-to-speech path**:
+1. 📁 **Make sure you are in the text-to-speech path**:
    ```bash
    cd /path/to/ts-client-tts-nodejs
    ```
 
-2. **Install the required dependencies**:
+2. 📦 **Install the required dependencies**:
    ```bash
    npm install
    ```
 
-3. **Configure your API key**:
+3. ⚙️ **Configure your API key**:
    - Open the file `examples/talkscriber_tts_client.ts`
    - Find line 5 where it says `apiKey: '<YOUR_API_KEY>'`
    - Replace `<YOUR_API_KEY>` with your actual API key:
@@ -196,14 +196,14 @@ The project includes a complete example that demonstrates how to use the TalkScr
    });
    ```
 
-4. **Run the example**:
+4. ▶️ **Run the example**:
    ```bash
    npm run example
    ```
-For detailed documentation, refer to our [documentation webpage](https://docs.talkscriber.com/docs/).
+📚 For detailed documentation, refer to our [documentation webpage](https://docs.talkscriber.com).
 
 
 
-## License
+## 📄 License
 
 This code is released under the MIT License. See [LICENSE] for further details.
