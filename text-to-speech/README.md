@@ -1,7 +1,6 @@
 ## Table of Contents
 
 - [About ts-client-tts](#about-ts-client-tts)
-- [Key Features of TalkScriber TTS](#key-features-of-talkscriber-tts)
 - [Installation and Getting Started](#installation-and-getting-started)
 - [Supported Audio Formats](#supported-audio-formats)
 - [Configuration Options](#configuration-options)
@@ -15,24 +14,6 @@
   - [Step-by-Step Instructions](#step-by-step-instructions)
   - [Example Code Location](#example-code-location)
   - [What the Example Does](#what-the-example-does)
-- [API Reference](#api-reference)
-  - [TalkScriberTTSService](#talkscriberttsservice)
-    - [Constructor](#constructor)
-    - [Methods](#methods)
-      - [connect()](#connect-promisevoid)
-      - [sendSpeakRequest()](#sendspeakrequesttext-string-speakername-string-boolean)
-      - [initAudio()](#initaudio-boolean)
-      - [close()](#close-void)
-      - [runSimpleTest()](#runsimpletesttext-string-promiseboolean)
-      - [getStoredAudioData()](#getstoredaudiodata-buffer)
-      - [getAudioInfo()](#getaudioinfo-object)
-    - [Events](#events)
-      - [audioComplete](#audiocomplete)
-      - [error](#error)
-      - [audioChunk](#audiochunk)
-- [Error Handling](#error-handling)
-- [Common Issues](#common-issues)
-- [Supported Speakers](#supported-speakers)
 - [License](#license)
 
 
@@ -139,7 +120,7 @@ const ttsClient = new TalkScriberTTSService({
   apiKey: 'your_api_key',
   speakerName: 'tara',
   enablePlayback: false,
-  saveAudioPath: './output/silent_audio.wav'
+  saveAudioPath: './output/audio.wav'
 });
 
 await ttsClient.runSimpleTest("This will be saved but not played.");
@@ -181,7 +162,7 @@ ttsClient.on('audioChunk', (chunk: Buffer) => {
 });
 ```
 
-## Running the Examples
+## Running the Example
 
 The project includes a complete example that demonstrates how to use the TalkScriber TTS client. Here's how to run it:
 
@@ -193,7 +174,7 @@ The project includes a complete example that demonstrates how to use the TalkScr
 
 ### Step-by-Step Instructions
 
-1. **Navigate to the project directory**:
+1. **Make sure you are in the text-to-speech path**:
    ```bash
    cd /path/to/ts-client-tts-nodejs
    ```
@@ -220,129 +201,9 @@ The project includes a complete example that demonstrates how to use the TalkScr
    ```bash
    npm run example
    ```
+For Detailed documents refer to our [doc webpage]{https://docs.talkscriber.com/docs/}.
 
-### Example Code Location
 
-The main example code is located in:
-- **File**: `examples/talkscriber_tts_client.ts`
-- **Purpose**: Demonstrates how to use the TalkScriber TTS service
-- **Features**: Shows real-time playback, file saving, event handling, and audio streaming
-
-### What the Example Does
-
-The example script will:
-1. Connect to the TalkScriber TTS service using your API key
-2. Send a text message for speech synthesis
-3. Receive and play audio in real-time with ultra-low latency
-4. Save the audio to a WAV file (if configured)
-5. Display audio information and statistics
-
-## API Reference
-
-### TalkScriberTTSService
-
-The main class for interacting with the TalkScriber TTS service.
-
-#### Constructor
-
-```typescript
-new TalkScriberTTSService(options: TalkScriberTTSOptions)
-```
-
-#### Methods
-
-##### `connect(): Promise<void>`
-Establishes WebSocket connection to the TTS server and authenticates.
-
-**Returns:** `Promise<void>` - Resolves when connected and authenticated
-
-##### `sendSpeakRequest(text: string, speakerName?: string): boolean`
-Sends a TTS request to the server.
-
-**Parameters:**
-- `text` (string): Text to convert to speech
-- `speakerName` (string, optional): Voice to use (overrides constructor setting)
-
-**Returns:** `boolean` - True if request sent successfully
-
-##### `initAudio(): boolean`
-Initializes audio playback system.
-
-**Returns:** `boolean` - True if audio initialized successfully
-
-##### `close(): void`
-Closes the WebSocket connection and stops audio playback.
-
-##### `runSimpleTest(text?: string): Promise<boolean>`
-Runs a complete TTS session: connect, send text, receive audio, and play.
-
-**Parameters:**
-- `text` (string, optional): Text to convert to speech
-
-**Returns:** `Promise<boolean>` - True if successful
-
-##### `getStoredAudioData(): Buffer`
-Gets the raw audio data that was received during generation.
-
-**Returns:** `Buffer` - The combined audio data
-
-##### `getAudioInfo(): object`
-Gets information about the received audio.
-
-**Returns:** `object` - Audio information including chunks count, total bytes, duration, etc.
-
-#### Events
-
-##### `audioComplete`
-Emitted when audio generation is completed.
-
-##### `error`
-Emitted when an error occurs.
-
-##### `audioChunk`
-Emitted when an audio chunk is received.
-
-## Error Handling
-
-```typescript
-try {
-  const ttsClient = new TalkScriberTTSService({
-    apiKey: 'your_key',
-    speakerName: 'tara'
-  });
-  
-  await ttsClient.connect();
-  ttsClient.sendSpeakRequest("Hello world!");
-  
-} catch (error) {
-  if (error instanceof Error) {
-    console.error('TTS Error:', error.message);
-  } else {
-    console.error('Unknown error:', error);
-  }
-}
-```
-
-### Common Issues
-
-**Authentication Error**: Make sure you've replaced `<YOUR_API_KEY>` with your actual API key
-
-**Audio Playback Issues**: 
-- Ensure your system has audio output capabilities
-- Check that no other applications are blocking audio access
-- On Linux, you may need to install ALSA or PulseAudio
-
-**Connection Issues**: 
-- Check your internet connection
-- Verify the API key is valid
-- Ensure firewall settings allow WebSocket connections
-
-## Supported Speakers
-
-The TalkScriber TTS service supports multiple speaker voices. You can specify the speaker using the `speakerName` parameter:
-
-- `"tara"` - Default female voice
-- Additional speakers may be available - check the TalkScriber documentation for the complete list
 
 ## License
 
