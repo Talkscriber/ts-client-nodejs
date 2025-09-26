@@ -2,7 +2,7 @@ import { TalkScriberTTSService } from '../src/TalkScriberTTSService';
 
 async function main() {
     const ttsClient = new TalkScriberTTSService({
-        apiKey: 'i5f3q9gTUZ3bjHYaI7wQUzc7LCO-58DqeaUqeKmXLTc',
+        apiKey: '<YOUR_API_KEY>',
         speakerName: 'tara',
         text: "Hello, this is a test of the text-to-speech system.",
         enablePlayback: true,

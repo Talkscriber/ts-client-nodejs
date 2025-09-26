@@ -1,19 +1,44 @@
-<h3 align="center">
-  ts-client-tts: Node.js Client API for State-of-the-Art Text-to-Speech, Suitable for Modern Conversational AI
-</h3>
+## Table of Contents
+
+- [About ts-client-tts](#about-ts-client-tts)
+- [Key Features of TalkScriber TTS](#key-features-of-talkscriber-tts)
+- [Installation and Getting Started](#installation-and-getting-started)
+- [Supported Audio Formats](#supported-audio-formats)
+- [Configuration Options](#configuration-options)
+- [Usage Patterns](#usage-patterns)
+  - [1. Basic Usage with Playback](#1-basic-usage-with-playback)
+  - [2. Silent Mode (No Audio Playback)](#2-silent-mode-no-audio-playback)
+  - [3. Audio File Saving](#3-audio-file-saving)
+  - [4. Event Handling](#4-event-handling)
+- [Running the Examples](#running-the-examples)
+  - [Prerequisites](#prerequisites)
+  - [Step-by-Step Instructions](#step-by-step-instructions)
+  - [Example Code Location](#example-code-location)
+  - [What the Example Does](#what-the-example-does)
+- [API Reference](#api-reference)
+  - [TalkScriberTTSService](#talkscriberttsservice)
+    - [Constructor](#constructor)
+    - [Methods](#methods)
+      - [connect()](#connect-promisevoid)
+      - [sendSpeakRequest()](#sendspeakrequesttext-string-speakername-string-boolean)
+      - [initAudio()](#initaudio-boolean)
+      - [close()](#close-void)
+      - [runSimpleTest()](#runsimpletesttext-string-promiseboolean)
+      - [getStoredAudioData()](#getstoredaudiodata-buffer)
+      - [getAudioInfo()](#getaudioinfo-object)
+    - [Events](#events)
+      - [audioComplete](#audiocomplete)
+      - [error](#error)
+      - [audioChunk](#audiochunk)
+- [Error Handling](#error-handling)
+- [Common Issues](#common-issues)
+- [Supported Speakers](#supported-speakers)
+- [License](#license)
+
 
 # About ts-client-tts
 
-ts-client-tts is the official TypeScript client for TalkScriber Text-to-Speech (TTS), a state-of-the-art TTS platform tailored for conversational AI enterprises. It provides exceptional speech synthesis services with ultra-low latency streaming and a strong emphasis on privacy and security.
-
-# Key Features of TalkScriber TTS
-
-- **Ultra-Low Latency Streaming**: Speech starts in less than 0.1 seconds with real-time audio chunk processing
-- **Configurable Buffering**: Adjustable buffer size for optimal latency vs. quality balance
-- **Multiple Output Options**: Support for real-time playback, file saving, or both
-- **Flexible Configuration**: Customizable server settings, audio parameters, and speaker selection
-- **Error Handling**: Comprehensive error handling and connection management
-- **Cross-Platform**: Works on Windows, macOS, and Linux
+This is the official TypeScript client for TalkScriber Text-to-Speech (TTS), a state-of-the-art TTS platform tailored for conversational AI enterprises. It provides exceptional speech synthesis services with ultra-low latency streaming and a strong emphasis on privacy and security.
 
 # Installation and Getting Started
 
