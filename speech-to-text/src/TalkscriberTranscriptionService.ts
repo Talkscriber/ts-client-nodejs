@@ -150,7 +150,7 @@ export class TalkscriberTranscriptionService extends EventEmitter {
   private handleMessage(msg: any) {
     if (this.uid !== msg.session_id) this.uid = msg.session_id;
     if (!msg.segments?.length) return;
-
+    this.finalResult = "";
     msg.segments.forEach((segment: { text: string; EOS?: boolean }) => {
       this.options.onUtterance?.(segment.text);
       this.finalResult += ` ${segment.text}`;

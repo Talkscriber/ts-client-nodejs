@@ -73,6 +73,48 @@ This will initialize the Talkscriber client and connect to the service. You'll n
 
 For complete examples of audio file processing, refer to the `examples` directory in the package source code.
 
+## Transcription Data Structure
+
+The Talkscriber service returns transcription data in the following structured format:
+
+```json
+{
+  "uid": "xxxxxxxxxxxxxxxxx",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 0.9503124999999999,
+      "text": "This is the first sentence.",
+      "EOS": true
+    },
+    {
+      "start": 1.5903125,
+      "end": 4.5903125,
+      "text": "Second ongoing sentence is happening in here",
+      "EOS": false
+    }
+  ]
+}
+```
+
+### Data Structure Explanation
+
+Each segment contains the following properties:
+
+- **`uid`**: Unique identifier for the transcription session
+- **`start`**: Start time of the segment in seconds
+- **`end`**: End time of the segment in seconds  
+- **`text`**: The transcribed text content
+- **`EOS`**: End-of-Sentence flag indicating whether the segment is complete
+
+### Callback Behavior
+
+The transcription service provides two distinct callback mechanisms:
+
+- **`onTranscription`**: Receives all the segments. This callback provides the full accumulated transcription text with all completed/uncompleted sentences.
+
+- **`onUtterance`**: Receives the latest ongoing segment where `EOS: false`. This callback provides real-time updates for sentences currently being processed, allowing for live transcription display.
+
 ## Smart Turn Detection
 
 The client supports advanced turn detection using machine learning for better endpoint detection:
