@@ -35,7 +35,7 @@ Both modules are designed for conversational AI applications with strong emphasi
 ### 🎤 Speech-to-Text Module
 Complete documentation for real-time audio transcription including installation, configuration, examples, and API reference.
 
-**Features**: Smart turn detection, 50+ languages, real-time streaming, ML-powered endpoint detection
+**Features**: High accuracy and speed, Smart turn detection, 50+ languages, real-time streaming, Multi-speaker diarization, Emotion recognition, Noise cancellation, Real-time translation, Batch processing
 
 [📖 Read Speech-to-Text Documentation →](./speech-to-text/README.md)
 
