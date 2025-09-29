@@ -22,15 +22,27 @@ The TalkScriber TypeScript Client Suite provides enterprise-grade voice AI capab
 
 Both modules are designed for conversational AI applications with strong emphasis on privacy, security, and performance.
 
+### ✨ Key Benefits
+- **Ultra-low latency** for real-time applications
+- **High accuracy** with state-of-the-art AI models
+- **50+ languages** supported across both modules
+- **Enterprise-grade** security and privacy
+- **WebSocket streaming** for optimal performance
+- **TypeScript support** with full type definitions
+
 ## 📚 Documentation
 
-### 🎤 [Speech-to-Text Module](./speech-to-text/)
+### 🎤 Speech-to-Text Module
 Complete documentation for real-time audio transcription including installation, configuration, examples, and API reference.
+
+**Features**: Smart turn detection, 50+ languages, real-time streaming, ML-powered endpoint detection
 
 [📖 Read Speech-to-Text Documentation →](./speech-to-text/README.md)
 
-### 🔊 [Text-to-Speech Module](./text-to-speech/)
+### 🔊 Text-to-Speech Module
 Complete documentation for speech synthesis including installation, configuration, examples, and API reference.
+
+**Features**: Ultra-low latency streaming, multiple voice options, real-time playback, audio file export
 
 [📖 Read Text-to-Speech Documentation →](./text-to-speech/README.md)
 
@@ -51,12 +63,18 @@ ts-client-nodejs/
 └── 📄 README.md               # This file
 ```
 
+## 🎯 Use Cases
+
+- **🤖 Conversational AI**: Voice assistants, chatbots, and interactive applications
+- **📞 Communication**: Real-time transcription for meetings and calls
+- **🎮 Interactive Apps**: Gaming, education, and IoT voice control
+- **♿ Accessibility**: Voice-to-text and text-to-speech for accessibility features
+
 ## 📞 Support & Community
 
 - **📧 Email**: [support@talkscriber.com](mailto:support@talkscriber.com)
 - **🌐 Website**: [talkscriber.com](https://talkscriber.com)
 - **📚 Documentation**: [docs.talkscriber.com](https://docs.talkscriber.com)
-- **🐛 Issues**: [GitHub Issues](https://github.com/talkscriber-npm/ts-client-nodejs/issues)
 
 ## 📄 License
 
