@@ -1,2 +1,13 @@
 dist/*
-*.gz
+*.tgz
+*.bin
+*egg-info*
+node_modules/
+.DS_Store
+.idea/
+.vscode/
+.gitignore
+.npmrc
+.npmignore
+.npmignore
+*/dist/*
