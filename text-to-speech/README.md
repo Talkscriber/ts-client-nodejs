@@ -13,37 +13,41 @@ Follow these steps to install and use the ts-client-tts for TalkScriber:
 
 2. 📝 In your project, create a new file (e.g., `tts_example.ts`) and add the following code:
    ```typescript
-   import { TalkScriberTTSService } from '@talkscriber-npm/ts-client-tts';
+    import { TalkScriberTTSService } from '@talkscriber-npm/ts-client-tts';
 
-   async function main() {
-     const ttsClient = new TalkScriberTTSService({
-       apiKey: '<YOUR_API_KEY>',
-       speakerName: 'tara',
-       enablePlayback: true,
-       saveAudioPath: './output/audio.wav',
-       onAudioChunk: (chunk: Buffer) => {
-         console.log(`Received audio chunk: ${chunk.length} bytes`);
-       },
-       onAudioComplete: () => {
-         console.log('Audio generation completed!');
-       }
-     });
+    async function main() {
+      const ttsClient = new TalkScriberTTSService({
+        apiKey: '<YOUR_API_KEY>',
+        speakerName: 'tara',
+        enablePlayback: true,
+        saveAudioPath: './output/audio.wav',
+        text: "Hello, this is a test message.",
+        onAudioChunk: (chunk: Buffer) => {
+          console.log(`Received audio chunk: ${chunk.length} bytes`);
+        },
+        onAudioComplete: () => {
+          console.log('Audio generation completed!');
+        }
+      });
 
-     try {
-       await ttsClient.connect();
-       console.log('Connected to TalkScriber TTS service');
+      try {
+        console.log('Starting TTS test...');
+        const success = await ttsClient.runSimpleTest("Hello, this is a test message.");
+        
+        if (success) {
+          console.log('TTS test completed successfully!');
+          const audioInfo = ttsClient.getAudioInfo();
+          console.log('Audio Information:');
+          console.log(`- Chunks received: ${audioInfo.chunksCount}`);
+          console.log(`- Total bytes: ${audioInfo.totalBytes.toLocaleString()}`);
+          console.log(`- Sample rate: ${audioInfo.sampleRate}Hz`);
+        }
+      } catch (error) {
+        console.error('Error:', error instanceof Error ? error.message : String(error));
+      }
+    }
 
-       // Send text to convert to speech
-       ttsClient.sendSpeakRequest("Hello, this is a test message.");
-
-     } catch (error) {
-       console.error('Error:', error instanceof Error ? error.message : String(error));
-     } finally {
-       ttsClient.close();
-     }
-   }
-
-   main().catch(console.error);
+    main().catch(console.error);
    ```
 
 3. 🔑 Replace `<YOUR_API_KEY>` with your actual TalkScriber API key.
