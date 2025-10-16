@@ -1,16 +1,18 @@
-import WebSocket from "ws";
-import { randomUUID } from "node:crypto";
 import { TalkscriberBase, TalkscriberMessage } from './TalkscriberBase.js';
 export { TalkscriberOptions } from './TalkscriberBase.js';
 
 /**
- * Node.js TalkscriberTranscriptionService class for real-time audio transcription.
+ * Browser-compatible TalkscriberTranscriptionService class for real-time audio transcription.
  */
 export class TalkscriberTranscriptionService extends TalkscriberBase {
   private ws: WebSocket | null = null;
 
   protected generateUID(): string {
-    return randomUUID();
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      const r = Math.random() * 16 | 0;
+      const v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
   }
 
   public async connect(): Promise<void> {
@@ -18,13 +20,13 @@ export class TalkscriberTranscriptionService extends TalkscriberBase {
       this.ws = new WebSocket(this.options.endpoint);
       let authResponseReceived = false;
 
-      this.ws.on("open", () => {
+      this.ws.onopen = () => {
         console.log("STT -> Talkscriber connection opened");
         this.ws!.send(JSON.stringify(this.getConnectionConfig()));
-      });
+      };
 
-      this.ws.on("message", (unparsedMessage: string) => {
-        const msg: TalkscriberMessage = JSON.parse(unparsedMessage);
+      this.ws.onmessage = (event: MessageEvent) => {
+        const msg: TalkscriberMessage = JSON.parse(event.data);
         authResponseReceived = true;
 
         if (msg.status === "ERROR" && msg.message === "UNAUTHORIZED") {
@@ -51,25 +53,26 @@ export class TalkscriberTranscriptionService extends TalkscriberBase {
         }
 
         this.handleMessage(msg);
-      });
+      };
 
-      this.ws.on("error", (error: Error) => {
-        console.error("STT -> Talkscriber error", error);
+      this.ws.onerror = () => {
+        const error = new Error("WebSocket connection failed");
+        console.error(error.message);
         this.close();
         reject(error);
-      });
+      };
 
-      this.ws.on("close", (code: number) => {
-        if (code === 1000 && !this.isAuthenticated) {
+      this.ws.onclose = (event: CloseEvent) => {
+        if (event.code === 1000 && !this.isAuthenticated) {
           const error = new Error("Authentication failed. Please check your API key.");
           console.error(error.message);
           reject(error);
-        } else if (code !== 1000 && !authResponseReceived) {
-          const error = new Error(`Connection closed unexpectedly (Code: ${code})`);
+        } else if (event.code !== 1000 && !authResponseReceived) {
+          const error = new Error(`Connection closed unexpectedly (Code: ${event.code})`);
           console.error(error.message);
           reject(error);
         }
-      });
+      };
 
       setTimeout(() => {
         if (!authResponseReceived) {
@@ -78,7 +81,7 @@ export class TalkscriberTranscriptionService extends TalkscriberBase {
           this.close();
           reject(error);
         }
-      }, 5000);
+      }, 10000);
     });
   }
 

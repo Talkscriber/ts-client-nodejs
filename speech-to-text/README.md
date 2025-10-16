@@ -1,9 +1,11 @@
 <h3 align="center">
-  ts-client: Node.js Client API for State-of-the-Art Speech-to-Text, Suitable for Modern Conversational AI
+  ts-client: Universal Client API for State-of-the-Art Speech-to-Text, Suitable for Modern Conversational AI
 </h3>
 
 # About ts-client
 ts-client is the official TypeScript client for Talkscriber, a state-of-the-Art Speech-to-Text (STT) platform tailored for conversational AI enterprises. It provides exceptional transcription services with a strong emphasis on privacy and security to enhance customer communication while protecting sensitive information.
+
+**Cross-Platform Support**: This package works seamlessly in both Node.js and browser environments using the same import statement. The package automatically uses the appropriate implementation based on your environment.
 
 # Key Features of Talkscriber
 - **A Word Error Rate (WER) of less than 4%**
@@ -18,9 +20,24 @@ Follow these steps to install and use the ts-client for Talkscriber:
    ```bash
    npm install @talkscriber-npm/ts-client
    ```
+2. Install the necessary TypeScript dependencies if you haven't already:
+   ```bash
+   npm install -D typescript ts-node @types/node
+   ```
 
-2. In your project, create a new file (e.g., `transcribe.ts`) and add the following code:
+3. Generate your API key and replace `<YOUR_API_KEY>` below with your actual Talkscriber API key.
+For more details, see: https://docs.talkscriber.com/docs/authentication
+
+4. Add the Talkscriber client to your project. The code below shows the basic integration pattern.
+   
+   **✨ Universal Import**: Use the same import in both Node.js and browser environments. The package automatically selects the correct implementation for your platform.
+   
+   For complete working examples with detailed implementation, see:
+   - **Node.js/CLI usage**: [Platform-Specific Implementations - Node.js](#1-️-nodejs-implementation-for-backendcli)
+   - **Browser/Web usage**: [Platform-Specific Implementations - Browser](#2--browser-implementation-for-web-apps)
+   
    ```typescript
+   // Works in both Node.js and browser!
    import { TalkscriberTranscriptionService } from '@talkscriber-npm/ts-client';
 
    async function main() {
@@ -57,12 +74,6 @@ Follow these steps to install and use the ts-client for Talkscriber:
    main().catch(console.error);
    ```
 
-3. Replace `<YOUR_API_KEY>` with your actual Talkscriber API key.
-
-4. Install the necessary TypeScript dependencies if you haven't already:
-   ```bash
-   npm install -D typescript ts-node @types/node
-   ```
 
 5. Compile and run your TypeScript code:
    ```bash
@@ -115,6 +126,177 @@ The transcription service provides two distinct callback mechanisms:
 
 - **`onUtterance`**: Receives the latest ongoing segment where `EOS: false`. This callback provides real-time updates for sentences currently being processed, allowing for live transcription display.
 
+## Running the Examples
+
+This package includes **two complete examples** demonstrating different use cases:
+
+### 1. Node.js Example
+Process pre-recorded audio files from the command line:
+
+```bash
+npm run example
+```
+
+- **Location**: `examples/nodejs/talkscriber_client.ts`
+- **What it does**: Transcribes a `.wav` audio file using Node.js
+- **Features**: File processing, smart turn detection
+
+**Quick Setup**:
+1. Edit `examples/nodejs/talkscriber_client.ts`
+2. Replace `<YOUR_API_KEY>` with your actual API key
+3. Run `npm run example`
+
+### 2. Browser UI Example (Web)
+Real-time microphone transcription in the browser:
+
+```bash
+npm run dev:ui
+```
+
+- **Location**: `examples/ui/`
+- **What it does**: Live transcription from your microphone in a web interface
+- **Features**: Real-time audio, visual UI, multiple languages
+
+**Quick Setup**:
+1. Run `npm run dev:ui` (auto-opens browser)
+2. Enter your API key in the web interface
+3. Click "Click to Start" and allow microphone access
+
+For detailed implementation guides, see [Platform-Specific Implementations](#-platform-specific-implementations) below.
+
+## 🔀 Platform-Specific Implementations
+
+**IMPORTANT**: The Talkscriber client provides **TWO SEPARATE IMPLEMENTATIONS** for different environments:
+
+### 📋 Quick Decision Guide
+
+**Choose Node.js Implementation if:**
+- ✅ Building a CLI tool or terminal application
+- ✅ Running on a Node.js server/backend
+- ✅ Processing audio files from disk
+- ✅ Need server-side audio processing
+
+**Choose Browser Implementation if:**
+- ✅ Building a web application
+- ✅ Using microphone in the browser
+- ✅ Creating a Single Page Application (SPA)
+- ✅ Need zero Node.js dependencies
+
+---
+
+### Detailed Implementation Guide
+
+### 1. 🖥️ Node.js Implementation (for Backend/CLI)
+
+**File**: `src/TalkscriberTranscriptionService.ts`
+
+**Environment**: Node.js, server-side, terminal applications
+
+**Import Statement**:
+```typescript
+import { TalkscriberTranscriptionService } from '@talkscriber-npm/ts-client';
+```
+
+**Use Cases**:
+- ✅ CLI tools and terminal applications
+- ✅ Backend/server-side services
+- ✅ Processing pre-recorded audio files
+- ✅ Node.js microservices
+- ✅ Batch audio processing
+
+**Technical Details**:
+- Requires Node.js runtime
+- Uses `ws` npm package for WebSocket
+- Uses Node.js `crypto.randomUUID()` for session IDs
+- Callback-based event handling
+- Includes Node.js dependencies
+
+**Example Code**:
+```typescript
+import { TalkscriberTranscriptionService } from '@talkscriber-npm/ts-client';
+
+const talkscriber = new TalkscriberTranscriptionService({
+  apiKey: 'your-api-key',
+  language: 'en',
+  enableTurnDetection: true
+});
+
+await talkscriber.connect();
+talkscriber.send(audioData, sampleRate);
+```
+
+**Live Example**: `examples/nodejs/talkscriber_client.ts`
+
+> **💡 Quick Start**: Run `npm run example` to test with an audio file. See [Running the Examples](#running-the-examples) for details.
+
+### 2. 🌐 Browser Implementation (for Web Apps)
+
+**File**: `src/TalkscriberTranscriptionService.browser.ts`
+
+**Environment**: Web browsers, frontend applications
+
+**Import Statement**:
+```typescript
+import { TalkscriberTranscriptionService } from '@talkscriber-npm/ts-client/TalkscriberTranscriptionService.browser.js';
+```
+
+**Use Cases**:
+- ✅ Web applications with microphone access
+- ✅ Single Page Applications (SPA)
+- ✅ React/Vue/Angular apps
+- ✅ Real-time browser transcription
+- ✅ Client-side audio processing
+
+**Technical Details**:
+- Runs in web browsers
+- Uses native browser `WebSocket` API (no npm packages needed)
+- Custom UUID generation (browser-compatible)
+- Zero Node.js dependencies
+- Works with modern bundlers (Webpack, Vite, etc.)
+
+**Example Code**:
+```typescript
+import { TalkscriberTranscriptionService } from '@talkscriber-npm/ts-client/TalkscriberTranscriptionService.browser.js';
+
+const talkscriber = new TalkscriberTranscriptionService({
+  apiKey: 'your-api-key',
+  language: 'en',
+  enableTurnDetection: true
+});
+
+await talkscriber.connect();
+// Get microphone stream and send audio
+talkscriber.send(audioData, sampleRate);
+```
+
+**Live Example**: `examples/ui/` - Complete web UI with microphone access
+
+> **💡 Quick Start**: Run `npm run dev:ui` to launch the browser example. See [Running the Examples](#running-the-examples) for details.
+
+### 📊 Side-by-Side Comparison
+
+| Aspect | 🖥️ Node.js Implementation | 🌐 Browser Implementation |
+|--------|---------------------------|---------------------------|
+| **Import Path** | `@talkscriber-npm/ts-client` | `@talkscriber-npm/ts-client/TalkscriberTranscriptionService.browser.js` |
+| **Runtime** | Node.js (v14+) | Modern browsers (Chrome, Firefox, Safari, Edge) |
+| **WebSocket** | `ws` npm package | Native browser `WebSocket` API |
+| **UUID** | `crypto.randomUUID()` | Custom Math.random() implementation |
+| **Dependencies** | ✅ Requires `ws` package | ❌ Zero external dependencies |
+| **Event System** | Callbacks | Callbacks |
+| **Typical Use** | CLI tools, backend APIs, file processing | Web UIs, microphone capture, SPAs |
+| **Example Location** | `examples/nodejs/` | `examples/ui/` |
+| **Run Command** | `npm run example` | `npm run dev:ui` |
+
+### 🔧 Shared Architecture
+
+Both implementations extend the same `TalkscriberBase` class, which means:
+- ✅ **Identical API**: Same methods, same configuration options
+- ✅ **Consistent behavior**: Same transcription quality and features
+- ✅ **Shared logic**: Audio resampling, message handling, connection management
+- ✅ **Easy to switch**: Minimal code changes when migrating between platforms
+
+**The ONLY difference is the environment-specific code** (WebSocket implementation and UUID generation).
+
 ## Smart Turn Detection
 
 The client supports advanced turn detection using machine learning for better endpoint detection:
@@ -127,87 +309,6 @@ When `enableTurnDetection` is set to `true`, the system uses an ML model to pred
 - Context awareness of speech patterns
 - Reduced false positives
 - Adaptive behavior across different speakers and languages
-
-You can listen for end-of-speech events:
-
-```typescript
-talkscriber.on('endOfSpeech', (text: string) => {
-  console.log('End of speech detected for:', text);
-});
-```
-
-## Running the Examples
-
-The project includes a complete example that demonstrates how to use the Talkscriber client with audio file processing. Here's how to run it:
-
-### Prerequisites
-
-1. **Get your API Key**: First, you need to obtain your Talkscriber API key from the [Talkscriber dashboard](https://app.talkscriber.com).
-
-2. **Audio File**: The example uses a sample audio file located at `examples/sample.wav`. You can replace this with your own audio file if needed.
-
-### Step-by-Step Instructions
-
-1. **Navigate to the project directory**:
-   ```bash
-   cd /path/to/ts-client-nodejs
-   ```
-
-2. **Install the required dependencies**:
-   ```bash
-   npm install
-   ```
-
-3. **Configure your API key**:
-   - Open the file `examples/talkscriber_client.ts`
-   - Find line 30 where it says `apiKey: '<YOUR_API_KEY>'`
-   - Replace `<YOUR_API_KEY>` with your actual API key:
-   ```typescript
-   const talkscriber = new TalkscriberTranscriptionService({
-     apiKey: 'your-actual-api-key-here', // Replace this with your real API key
-     language: 'en',
-     enableTurnDetection: true,
-     turnDetectionTimeout: 0.6,
-     // ... rest of configuration
-   });
-   ```
-
-4. **Run the example**:
-   ```bash
-   npm run example
-   ```
-
-### Example Code Location
-
-The main example code is located in:
-- **File**: `examples/talkscriber_client.ts`
-- **Purpose**: Demonstrates how to transcribe an audio file using the Talkscriber service
-- **Features**: Shows smart turn detection, event handling, and audio streaming
-
-### What the Example Does
-
-The example script will:
-1. Connect to the Talkscriber service using your API key
-2. Load and decode the sample audio file (`examples/sample.wav`)
-3. Stream the audio data to the transcription service
-4. Display real-time transcription results
-5. Show end-of-speech detection events (if enabled)
-
-### Audio File Requirements
-
-The provided code is agnostic towards the sample rate and should be able to handle any .wav file/buffer that is pcm_s16le encoded. You can replace `examples/sample.wav` with your own audio file by:
-
-1. Placing your audio file in the `examples/` directory
-2. Updating the `audioFilePath` variable in `examples/talkscriber_client.ts`:
-   ```typescript
-   const audioFilePath = './examples/your-audio-file.wav';
-   ```
-
-### Troubleshooting
-
-- **Authentication Error**: Make sure you've replaced `<YOUR_API_KEY>` with your actual API key
-- **File Not Found**: Ensure the audio file exists in the `examples/` directory
-- **Connection Issues**: Check your internet connection and verify the API key is valid
 
 # Supported Languages
 The Talkscriber engine handles the following languages:
