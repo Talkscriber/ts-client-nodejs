@@ -1,0 +1,58 @@
+{
+  "name": "@talkscriber-npm/ts-client-tts",
+  "version": "0.0.2",
+  "description": "A JS/TypeScript client module for Talkscriber Text-to-Speech (TTS)",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "start": "node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "example": "ts-node -r tsconfig-paths/register examples/talkscriber_tts_client.ts"
+  },
+  "keywords": [
+    "client",
+    "websocket",
+    "audio",
+    "talkscriber",
+    "text-to-speech",
+    "tts"
+  ],
+  "author": "Talkscriber <support@talkscriber.com>",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^7.5.10",
+    "naudiodon": "^2.3.0",
+    "wav": "^1.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.10",
+    "@types/ws": "^8.5.13",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/talkscriber-npm/ts-client-tts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/talkscriber-npm/ts-client-tts/issues"
+  },
+  "homepage": "https://github.com/talkscriber-npm/ts-client-tts#readme",
+  "directories": {
+    "example": "examples"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

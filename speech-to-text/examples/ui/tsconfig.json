@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "lib": ["ES6", "DOM"],
+    "module": "ES2020",
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "rootDir": "../..",
+    "paths": {
+      "../../src/*": ["../../src/*"]
+    }
+  },
+  "include": ["app.ts", "../../src/TalkscriberBase.ts", "../../src/TalkscriberTranscriptionService.browser.ts"],
+  "exclude": ["dist/**"]
+}
+

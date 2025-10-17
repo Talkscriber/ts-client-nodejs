@@ -1,274 +1,91 @@
-<h3 align="center">
-  ts-client: Node.js Client API for State-of-the-Art Speech-to-Text, Suitable for Modern Conversational AI
-</h3>
+# 🎙️ TalkScriber TypeScript Client Suite
 
-# About ts-client
-ts-client is the official TypeScript client for Talkscriber, a state-of-the-Art Speech-to-Text (STT) platform tailored for conversational AI enterprises. It provides exceptional transcription services with a strong emphasis on privacy and security to enhance customer communication while protecting sensitive information.
+<div align="center">
 
-# Key Features of Talkscriber
-- **A Word Error Rate (WER) of less than 4%**
-- **Very low latency (under 150 ms)**
-- **Support for 50+ languages**
+![TalkScriber Logo](https://img.shields.io/badge/TalkScriber-AI%20Voice%20Platform-blue?style=for-the-badge&logo=mic)
 
-# Installation and Getting Started
+**State-of-the-Art Speech-to-Text & Text-to-Speech for Modern Conversational AI**
 
-Follow these steps to install and use the ts-client for Talkscriber:
+[![npm version](https://img.shields.io/npm/v/@talkscriber-npm/ts-client.svg?style=flat-square)](https://www.npmjs.com/package/@talkscriber-npm/ts-client)
+[![npm version](https://img.shields.io/npm/v/@talkscriber-npm/ts-client-tts.svg?style=flat-square)](https://www.npmjs.com/package/@talkscriber-npm/ts-client-tts)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![Node.js](https://img.shields.io/badge/Node.js-14%2B-green.svg?style=flat-square)](https://nodejs.org/)
 
-1. Install the package:
-   ```bash
-   npm install @talkscriber-npm/ts-client
-   ```
+</div>
 
-2. In your project, create a new file (e.g., `transcribe.ts`) and add the following code:
-   ```typescript
-   import { TalkscriberTranscriptionService } from '@talkscriber-npm/ts-client';
+## 🚀 Overview
 
-   async function main() {
-   const talkscriber = new TalkscriberTranscriptionService({
-     apiKey: '<YOUR_API_KEY>',
-     language: 'en', // Specify the language here (e.g., 'en' for English)
-     enableTurnDetection: true, // Enable smart turn detection using ML model
-     turnDetectionTimeout: 0.6, // Timeout threshold for end-of-speech detection in seconds
-     onTranscription: (text: string) => {
-       console.log('Transcription:', text);
-     },
-     onUtterance: (text: string) => {
-       console.log('Utterance:', text);
-     }
-   });
+The TalkScriber TypeScript Client Suite provides enterprise-grade voice AI capabilities through two powerful modules:
 
-     try {
-       await talkscriber.connect();
-       console.log('Connected to Talkscriber service');
+- **🎤 [Speech-to-Text](./speech-to-text/)** - Real-time audio transcription with <4% WER and <150ms latency
+- **🔊 [Text-to-Speech](./text-to-speech/)** - Ultra-low latency speech synthesis with streaming audio
 
-       // Your audio processing code here
-       // For example:
-       // const audioData = new Float32Array(/* your audio data */);
-       // const sampleRate = 44100; // or your actual sample rate
-       // talkscriber.send(audioData, sampleRate);
+Both modules are designed for conversational AI applications with strong emphasis on privacy, security, and performance.
 
-     } catch (error) {
-       console.error('Error:', error instanceof Error ? error.message : String(error));
-     } finally {
-       talkscriber.close();
-     }
-   }
+### ✨ Key Benefits
+- **Ultra-low latency** for real-time applications
+- **High accuracy** with state-of-the-art AI models
+- **50+ languages** supported across both modules
+- **Enterprise-grade** security and privacy
+- **WebSocket streaming** for optimal performance
+- **TypeScript support** with full type definitions
 
-   main().catch(console.error);
-   ```
+## 📚 Documentation
 
-3. Replace `<YOUR_API_KEY>` with your actual Talkscriber API key.
+### 🎤 Speech-to-Text Module
+Complete documentation for real-time audio transcription including installation, configuration, examples, and API reference.
 
-4. Install the necessary TypeScript dependencies if you haven't already:
-   ```bash
-   npm install -D typescript ts-node @types/node
-   ```
+**Features**: High accuracy and speed, Smart turn detection, 50+ languages, real-time streaming, Multi-speaker diarization, Emotion recognition, Noise cancellation, Real-time translation, Batch processing
 
-5. Compile and run your TypeScript code:
-   ```bash
-   npx ts-node transcribe.ts
-   ```
+[📖 Read Speech-to-Text Documentation →](./speech-to-text/README.md)
 
-This will initialize the Talkscriber client and connect to the service. You'll need to add your own audio processing logic to send audio data to the `talkscriber.send()` method.
+### 🔊 Text-to-Speech Module
+Complete documentation for speech synthesis including installation, configuration, examples, and API reference.
 
-For complete examples of audio file processing, refer to the `examples` directory in the package source code.
+**Features**: Ultra-low latency streaming, multiple voice options, real-time playback, audio file export
 
-## Smart Turn Detection
+[📖 Read Text-to-Speech Documentation →](./text-to-speech/README.md)
 
-The client supports advanced turn detection using machine learning for better endpoint detection:
+## 🏗️ Project Structure
 
-- **enableTurnDetection** (boolean, default: false): Enables smart turn detection using ML model for better endpoint detection
-- **turnDetectionTimeout** (number, default: 0.6): Timeout threshold for end-of-speech detection in seconds (fallback when ML model confidence is low)
-
-When `enableTurnDetection` is set to `true`, the system uses an ML model to predict turn completion in addition to the standard timeout-based method. This provides:
-- Improved accuracy over time-based thresholds alone
-- Context awareness of speech patterns
-- Reduced false positives
-- Adaptive behavior across different speakers and languages
-
-You can listen for end-of-speech events:
-
-```typescript
-talkscriber.on('endOfSpeech', (text: string) => {
-  console.log('End of speech detected for:', text);
-});
+```
+ts-client-nodejs/
+├── 📁 speech-to-text/          # Speech-to-Text module
+│   ├── 📄 README.md            # STT documentation
+│   ├── 📁 src/                 # Source code
+│   ├── 📁 examples/            # STT examples
+│   └── 📄 package.json         # STT dependencies
+├── 📁 text-to-speech/          # Text-to-Speech module
+│   ├── 📄 README.md            # TTS documentation
+│   ├── 📁 src/                 # Source code
+│   ├── 📁 examples/            # TTS examples
+│   └── 📄 package.json         # TTS dependencies
+└── 📄 README.md               # This file
 ```
 
-## Running the Examples
+## 🎯 Use Cases
 
-The project includes a complete example that demonstrates how to use the Talkscriber client with audio file processing. Here's how to run it:
+- **🤖 Conversational AI**: Voice assistants, chatbots, and interactive applications
+- **📞 Communication**: Real-time transcription for meetings and calls
+- **🎮 Interactive Apps**: Gaming, education, and IoT voice control
+- **♿ Accessibility**: Voice-to-text and text-to-speech for accessibility features
 
-### Prerequisites
+## 📞 Support & Community
 
-1. **Get your API Key**: First, you need to obtain your Talkscriber API key from the [Talkscriber dashboard](https://app.talkscriber.com).
+- **📧 Email**: [support@talkscriber.com](mailto:support@talkscriber.com)
+- **🌐 Website**: [talkscriber.com](https://talkscriber.com)
+- **📚 Documentation**: [docs.talkscriber.com](https://docs.talkscriber.com)
 
-2. **Audio File**: The example uses a sample audio file located at `examples/sample.wav`. You can replace this with your own audio file if needed.
+## 📄 License
 
-### Step-by-Step Instructions
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
-1. **Navigate to the project directory**:
-   ```bash
-   cd /path/to/ts-client-nodejs
-   ```
+---
 
-2. **Install the required dependencies**:
-   ```bash
-   npm install
-   ```
+<div align="center">
 
-3. **Configure your API key**:
-   - Open the file `examples/talkscriber_client.ts`
-   - Find line 30 where it says `apiKey: '<YOUR_API_KEY>'`
-   - Replace `<YOUR_API_KEY>` with your actual API key:
-   ```typescript
-   const talkscriber = new TalkscriberTranscriptionService({
-     apiKey: 'your-actual-api-key-here', // Replace this with your real API key
-     language: 'en',
-     enableTurnDetection: true,
-     turnDetectionTimeout: 0.6,
-     // ... rest of configuration
-   });
-   ```
+**Ready to build amazing voice AI applications?**
 
-4. **Run the example**:
-   ```bash
-   npm run example
-   ```
+[🚀 Get Started with Speech-to-Text →](./speech-to-text/) | [🔊 Get Started with Text-to-Speech →](./text-to-speech/)
 
-### Example Code Location
-
-The main example code is located in:
-- **File**: `examples/talkscriber_client.ts`
-- **Purpose**: Demonstrates how to transcribe an audio file using the Talkscriber service
-- **Features**: Shows smart turn detection, event handling, and audio streaming
-
-### What the Example Does
-
-The example script will:
-1. Connect to the Talkscriber service using your API key
-2. Load and decode the sample audio file (`examples/sample.wav`)
-3. Stream the audio data to the transcription service
-4. Display real-time transcription results
-5. Show end-of-speech detection events (if enabled)
-
-### Audio File Requirements
-
-The provided code is agnostic towards the sample rate and should be able to handle any .wav file/buffer that is pcm_s16le encoded. You can replace `examples/sample.wav` with your own audio file by:
-
-1. Placing your audio file in the `examples/` directory
-2. Updating the `audioFilePath` variable in `examples/talkscriber_client.ts`:
-   ```typescript
-   const audioFilePath = './examples/your-audio-file.wav';
-   ```
-
-### Troubleshooting
-
-- **Authentication Error**: Make sure you've replaced `<YOUR_API_KEY>` with your actual API key
-- **File Not Found**: Ensure the audio file exists in the `examples/` directory
-- **Connection Issues**: Check your internet connection and verify the API key is valid
-
-# Supported Languages
-The Talkscriber engine handles the following languages:
-- "en": "english",
-- "zh": "chinese"
-- "de": "german"
-- "es": "spanish"
-- "ru": "russian"
-- "ko": "korean"
-- "fr": "french"
-- "ja": "japanese"
-- "pt": "portuguese"
-- "tr": "turkish"
-- "pl": "polish"
-- "ca": "catalan"
-- "nl": "dutch"
-- "ar": "arabic"
-- "sv": "swedish"
-- "it": "italian"
-- "id": "indonesian"
-- "hi": "hindi"
-- "fi": "finnish"
-- "vi": "vietnamese"
-- "he": "hebrew"
-- "uk": "ukrainian"
-- "el": "greek"
-- "ms": "malay"
-- "cs": "czech"
-- "ro": "romanian"
-- "da": "danish"
-- "hu": "hungarian"
-- "ta": "tamil"
-- "no": "norwegian"
-- "th": "thai"
-- "ur": "urdu"
-- "hr": "croatian"
-- "bg": "bulgarian"
-- "lt": "lithuanian"
-- "la": "latin"
-- "mi": "maori"
-- "ml": "malayalam"
-- "cy": "welsh"
-- "sk": "slovak"
-- "te": "telugu"
-- "fa": "persian"
-- "lv": "latvian"
-- "bn": "bengali"
-- "sr": "serbian"
-- "az": "azerbaijani"
-- "sl": "slovenian"
-- "kn": "kannada"
-- "et": "estonian"
-- "mk": "macedonian"
-- "br": "breton"
-- "eu": "basque"
-- "is": "icelandic"
-- "hy": "armenian"
-- "ne": "nepali"
-- "mn": "mongolian"
-- "bs": "bosnian"
-- "kk": "kazakh"
-- "sq": "albanian"
-- "sw": "swahili"
-- "gl": "galician"
-- "mr": "marathi"
-- "pa": "punjabi"
-- "si": "sinhala"
-- "km": "khmer"
-- "sn": "shona"
-- "yo": "yoruba"
-- "so": "somali"
-- "af": "afrikaans"
-- "oc": "occitan"
-- "ka": "georgian"
-- "be": "belarusian"
-- "tg": "tajik"
-- "sd": "sindhi"
-- "gu": "gujarati"
-- "am": "amharic"
-- "yi": "yiddish"
-- "lo": "lao"
-- "uz": "uzbek"
-- "fo": "faroese"
-- "ht": "haitian creole"
-- "ps": "pashto"
-- "tk": "turkmen"
-- "nn": "nynorsk"
-- "mt": "maltese"
-- "sa": "sanskrit"
-- "lb": "luxembourgish"
-- "my": "myanmar"
-- "bo": "tibetan"
-- "tl": "tagalog"
-- "mg": "malagasy"
-- "as": "assamese"
-- "tt": "tatar"
-- "haw": "hawaiian"
-- "ln": "lingala"
-- "ha": "hausa"
-- "ba": "bashkir"
-- "jw": "javanese"
-- "su": "sundanese"
-- "yue": "cantonese"
-
-# License
-This code is released under the MIT License. See [LICENSE] for further details.
+</div>

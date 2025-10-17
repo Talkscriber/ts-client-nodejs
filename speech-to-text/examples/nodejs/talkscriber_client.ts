@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import { decode } from 'wav-decoder';
-import { TalkscriberTranscriptionService } from '../src/TalkscriberTranscriptionService';
+import { TalkscriberTranscriptionService } from '@talkscriber-npm/ts-client';
 
-const audioFilePath = './examples/sample.wav';
+const audioFilePath = './examples/nodejs/sample.wav';
 
 async function decodeWavFile(filePath: string): Promise<[Float32Array, number]> {
     const buffer = fs.readFileSync(filePath);
@@ -33,11 +33,6 @@ async function main() {
         turnDetectionTimeout: 0.6,
         onTranscription: (text: string) => console.log('Transcription:', text),
         onUtterance: (text: string) => console.log('Utterance:', text)
-    });
-
-    // Listen for end of speech events
-    talkscriber.on('endOfSpeech', (text: string) => {
-        console.log('End of speech detected for:', text);
     });
 
     try {
