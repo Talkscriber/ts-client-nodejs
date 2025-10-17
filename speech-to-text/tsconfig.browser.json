@@ -1,19 +1,26 @@
 {
-  "extends": "./tsconfig.json",
   "compilerOptions": {
     "target": "ES2020",
     "module": "ES2020",
+    "lib": ["ES2020", "DOM"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
-    "outDir": "./dist",
+    "outDir": "./dist-browser",
+    "rootDir": "./src",
     "declaration": true,
     "declarationMap": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "noImplicitAny": false
   },
   "include": [
     "src/index.browser.ts",
     "src/TalkscriberTranscriptionService.browser.ts",
     "src/TalkscriberBase.ts"
-  ]
+  ],
+  "exclude": ["node_modules", "dist", "dist-browser", "examples"]
 }
 
 

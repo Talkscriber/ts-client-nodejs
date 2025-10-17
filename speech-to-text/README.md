@@ -36,8 +36,11 @@ For more details, see: https://docs.talkscriber.com/docs/authentication
    // For Node.js (backend, CLI, file processing)
    import { TalkscriberTranscriptionService } from '@talkscriber-npm/ts-client';
 
-   // For Browser (web apps, microphone access)
-   import { TalkscriberBrowserTranscriptionService } from '@talkscriber-npm/ts-client';
+   // For Browser (web apps, microphone access) - use the browser subpath
+   import { TalkscriberBrowserTranscriptionService } from '@talkscriber-npm/ts-client/browser';
+   
+   // Or in HTML with CDN:
+   // import { TalkscriberBrowserTranscriptionService } from 'https://cdn.jsdelivr.net/npm/@talkscriber-npm/ts-client/dist/index.browser.js';
 
    async function main() {
      // Use TalkscriberTranscriptionService in Node.js
@@ -185,11 +188,22 @@ import { TalkscriberTranscriptionService } from '@talkscriber-npm/ts-client';
 const talkscriber = new TalkscriberTranscriptionService({ /* config */ });
 ```
 
-**Browser Import**:
+**Browser Import** (with build tools like Vite/Webpack):
 ```typescript
-import { TalkscriberBrowserTranscriptionService } from '@talkscriber-npm/ts-client';
+import { TalkscriberBrowserTranscriptionService } from '@talkscriber-npm/ts-client/browser';
 
 const talkscriber = new TalkscriberBrowserTranscriptionService({ /* config */ });
+```
+
+**Browser Import** (direct in HTML):
+```html
+<script type="module">
+import { TalkscriberBrowserTranscriptionService } from '/node_modules/@talkscriber-npm/ts-client/dist/index.browser.js';
+// or from CDN:
+// import { TalkscriberBrowserTranscriptionService } from 'https://cdn.jsdelivr.net/npm/@talkscriber-npm/ts-client/dist/index.browser.js';
+
+const talkscriber = new TalkscriberBrowserTranscriptionService({ /* config */ });
+</script>
 ```
 
 ### 1. 🖥️ Node.js Usage (Backend/CLI)
@@ -226,9 +240,9 @@ Perfect for:
 - ✅ Real-time browser transcription
 - ✅ Client-side audio processing
 
-**Example**:
+**Example** (with bundler):
 ```typescript
-import { TalkscriberBrowserTranscriptionService } from '@talkscriber-npm/ts-client';
+import { TalkscriberBrowserTranscriptionService } from '@talkscriber-npm/ts-client/browser';
 
 const talkscriber = new TalkscriberBrowserTranscriptionService({
   apiKey: 'your-api-key',
@@ -1153,7 +1167,7 @@ npm install @talkscriber-npm/ts-client
 
 Then in your TypeScript/JavaScript:
 ```typescript
-import { TalkscriberBrowserTranscriptionService } from '@talkscriber-npm/ts-client';
+import { TalkscriberBrowserTranscriptionService } from '@talkscriber-npm/ts-client/browser';
 ```
 
 **Handle Connection Errors:**

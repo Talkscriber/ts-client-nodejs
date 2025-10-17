@@ -1,5 +1,3 @@
-// Export Node.js implementation
+// Export Node.js implementation only
+// For browser, use @talkscriber-npm/ts-client/browser import
 export { TalkscriberTranscriptionService, TalkscriberOptions } from './TalkscriberTranscriptionService';
-
-// Also export browser implementation for explicit use
-export { TalkscriberBrowserTranscriptionService } from './TalkscriberTranscriptionService.browser';
