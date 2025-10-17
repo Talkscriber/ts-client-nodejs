@@ -11,3 +11,11 @@ node_modules/
 .npmignore
 .npmignore
 */dist/*
+
+speech-to-text/examples/nodejs/talkscriber_client.js
+speech-to-text/examples/ui/app.js
+speech-to-text/src/index.browser.js
+speech-to-text/src/index.js
+speech-to-text/src/TalkscriberBase.js
+speech-to-text/src/TalkscriberTranscriptionService.browser.js
+speech-to-text/src/TalkscriberTranscriptionService.js
