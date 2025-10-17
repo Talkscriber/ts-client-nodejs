@@ -260,7 +260,7 @@ talkscriber.send(audioData, sampleRate);
 
 | Aspect | 🖥️ Node.js | 🌐 Browser |
 |--------|------------|------------|
-| **Import** | `@talkscriber-npm/ts-client` | `@talkscriber-npm/ts-client` |
+| **Import** | `@talkscriber-npm/ts-client` | `@talkscriber-npm/ts-client/browser` |
 | **Class Name** | `TalkscriberTranscriptionService` | `TalkscriberBrowserTranscriptionService` |
 | **Runtime** | Node.js (v14+) | Modern browsers |
 | **Dependencies** | Requires `ws` package | Zero dependencies |
