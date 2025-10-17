@@ -1,7 +1,10 @@
-import { TalkscriberTranscriptionService } from '../../src/TalkscriberTranscriptionService.browser.js';
+// Get the browser client from the global set by index.html (from local node_modules)
+function getBrowserService(): any {
+	return (window as any).TalkscriberBrowserTranscriptionService;
+}
 
 class TalkscriberWebUI {
-    private talkscriber: TalkscriberTranscriptionService | null = null;
+	private talkscriber: any = null;
     private isRecording: boolean = false;
     private audioContext: AudioContext | null = null;
     private processor: ScriptProcessorNode | null = null;
@@ -79,7 +82,8 @@ class TalkscriberWebUI {
             const language = this.languageSelect.value;
             const enableTurnDetection = this.turnDetectionCheckbox.checked;
             
-            this.talkscriber = new TalkscriberTranscriptionService({
+			const BrowserService = getBrowserService();
+			this.talkscriber = new BrowserService({
                 apiKey,
                 language,
                 enableTurnDetection,

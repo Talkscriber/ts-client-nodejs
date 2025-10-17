@@ -2,9 +2,9 @@ import { TalkscriberBase, TalkscriberMessage } from './TalkscriberBase.js';
 export { TalkscriberOptions } from './TalkscriberBase.js';
 
 /**
- * Browser-compatible TalkscriberTranscriptionService class for real-time audio transcription.
+ * Browser-compatible TalkscriberBrowserTranscriptionService class for real-time audio transcription.
  */
-export class TalkscriberTranscriptionService extends TalkscriberBase {
+export class TalkscriberBrowserTranscriptionService extends TalkscriberBase {
   private ws: WebSocket | null = null;
 
   protected generateUID(): string {

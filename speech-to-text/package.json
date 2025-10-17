@@ -6,18 +6,9 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "browser": {
-        "types": "./dist/index.browser.d.ts",
-        "default": "./dist/index.browser.js"
-      },
-      "node": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      },
-      "default": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      }
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     }
   },
   "files": [
@@ -26,9 +17,9 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && tsc --project tsconfig.browser.json",
     "build:ui": "tsc --project examples/ui/tsconfig.json",
-    "dev:ui": "npm run build:ui && http-server examples/ui -p 8320 -o",
+    "dev:ui": "npm run build:ui && http-server . -p 8320 -o /examples/ui/index.html",
     "prepublishOnly": "npm run build",
     "start": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -44,7 +35,7 @@
   "author": "Talkscriber <support@talkscriber.com>",
   "license": "MIT",
   "dependencies": {
-    "@talkscriber-npm/ts-client": "^1.2.0",
+    "@talkscriber-npm/ts-client": "file:talkscriber-npm-ts-client-1.0.11.tgz",
     "wav-decoder": "^1.3.0",
     "ws": "^7.5.10"
   },

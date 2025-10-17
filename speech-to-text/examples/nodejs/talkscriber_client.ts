@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import { decode } from 'wav-decoder';
-import { TalkscriberTranscriptionService } from '../../dist/index';
+import { TalkscriberTranscriptionService } from '@talkscriber-npm/ts-client';
 
 const audioFilePath = './examples/nodejs/sample.wav';
 

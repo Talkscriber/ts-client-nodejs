@@ -63,6 +63,12 @@
         </main>
     </div>
 
-    <script type="module" src="dist/examples/ui/app.js?v=2"></script>
+    <!-- Expose the class from local node_modules onto window for the example to use -->
+    <script type="module">
+    import { TalkscriberBrowserTranscriptionService } from '/node_modules/@talkscriber-npm/ts-client/dist/index.browser.js';
+    window.TalkscriberBrowserTranscriptionService = TalkscriberBrowserTranscriptionService;
+    </script>
+
+    <script type="module" src="/examples/ui/dist/examples/ui/app.js?v=3"></script>
 </body>
 </html>

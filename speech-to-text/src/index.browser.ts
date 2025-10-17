@@ -1,2 +1,1 @@
-export { TalkscriberTranscriptionService, TalkscriberOptions } from './TalkscriberTranscriptionService.browser';
-
+export { TalkscriberBrowserTranscriptionService, TalkscriberOptions } from './TalkscriberTranscriptionService.browser.js';

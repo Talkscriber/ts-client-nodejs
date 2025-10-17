@@ -5,7 +5,7 @@
 # About ts-client
 ts-client is the official TypeScript client for Talkscriber, a state-of-the-Art Speech-to-Text (STT) platform tailored for conversational AI enterprises. It provides exceptional transcription services with a strong emphasis on privacy and security to enhance customer communication while protecting sensitive information.
 
-**Cross-Platform Support**: This package works seamlessly in both Node.js and browser environments using the same import statement. The package automatically uses the appropriate implementation based on your environment.
+**Cross-Platform Support**: This package works seamlessly in both Node.js and browser environments with clear, explicit class names for each platform.
 
 # Key Features of Talkscriber
 - **A Word Error Rate (WER) of less than 4%**
@@ -30,29 +30,30 @@ For more details, see: https://docs.talkscriber.com/docs/authentication
 
 4. Add the Talkscriber client to your project. The code below shows the basic integration pattern.
    
-   **✨ Universal Import**: Use the same import in both Node.js and browser environments. The package automatically selects the correct implementation for your platform.
-   
-   For complete working examples with detailed implementation, see:
-   - **Node.js/CLI usage**: [Platform-Specific Implementations - Node.js](#1-️-nodejs-implementation-for-backendcli)
-   - **Browser/Web usage**: [Platform-Specific Implementations - Browser](#2--browser-implementation-for-web-apps)
+   **✨ Simple & Explicit**: Use the appropriate class for your environment.
    
    ```typescript
-   // Works in both Node.js and browser!
+   // For Node.js (backend, CLI, file processing)
    import { TalkscriberTranscriptionService } from '@talkscriber-npm/ts-client';
 
+   // For Browser (web apps, microphone access)
+   import { TalkscriberBrowserTranscriptionService } from '@talkscriber-npm/ts-client';
+
    async function main() {
-   const talkscriber = new TalkscriberTranscriptionService({
-     apiKey: '<YOUR_API_KEY>',
-     language: 'en', // Specify the language here (e.g., 'en' for English)
-     enableTurnDetection: true, // Enable smart turn detection using ML model
-     turnDetectionTimeout: 0.6, // Timeout threshold for end-of-speech detection in seconds
-     onTranscription: (text: string) => {
-       console.log('Transcription:', text);
-     },
-     onUtterance: (text: string) => {
-       console.log('Utterance:', text);
-     }
-   });
+     // Use TalkscriberTranscriptionService in Node.js
+     // Use TalkscriberBrowserTranscriptionService in Browser
+     const talkscriber = new TalkscriberTranscriptionService({
+       apiKey: '<YOUR_API_KEY>',
+       language: 'en', // Specify the language here (e.g., 'en' for English)
+       enableTurnDetection: true, // Enable smart turn detection using ML model
+       turnDetectionTimeout: 0.6, // Timeout threshold for end-of-speech detection in seconds
+       onTranscription: (text: string) => {
+         console.log('Transcription:', text);
+       },
+       onUtterance: (text: string) => {
+         console.log('Utterance:', text);
+       }
+     });
 
      try {
        await talkscriber.connect();
@@ -73,6 +74,10 @@ For more details, see: https://docs.talkscriber.com/docs/authentication
 
    main().catch(console.error);
    ```
+   
+   For complete working examples, see:
+   - **Node.js/CLI**: [examples/nodejs/talkscriber_client.ts](examples/nodejs/talkscriber_client.ts)
+   - **Browser/Web**: [examples/ui/](examples/ui/)
 
 
 5. Compile and run your TypeScript code:
@@ -166,52 +171,37 @@ For detailed implementation guides, see [Platform-Specific Implementations](#-pl
 
 ## 🔀 Platform-Specific Implementations
 
-**IMPORTANT**: The Talkscriber client provides **TWO SEPARATE IMPLEMENTATIONS** for different environments:
+The Talkscriber client provides **two distinct classes** for different environments:
 
-### 📋 Quick Decision Guide
+- **`TalkscriberTranscriptionService`**: For Node.js (backend, CLI, file processing)
+- **`TalkscriberBrowserTranscriptionService`**: For Browser (web apps, microphone)
 
-**Choose Node.js Implementation if:**
-- ✅ Building a CLI tool or terminal application
-- ✅ Running on a Node.js server/backend
-- ✅ Processing audio files from disk
-- ✅ Need server-side audio processing
+### 📋 Quick Reference
 
-**Choose Browser Implementation if:**
-- ✅ Building a web application
-- ✅ Using microphone in the browser
-- ✅ Creating a Single Page Application (SPA)
-- ✅ Need zero Node.js dependencies
-
----
-
-### Detailed Implementation Guide
-
-### 1. 🖥️ Node.js Implementation (for Backend/CLI)
-
-**File**: `src/TalkscriberTranscriptionService.ts`
-
-**Environment**: Node.js, server-side, terminal applications
-
-**Import Statement**:
+**Node.js Import**:
 ```typescript
 import { TalkscriberTranscriptionService } from '@talkscriber-npm/ts-client';
+
+const talkscriber = new TalkscriberTranscriptionService({ /* config */ });
 ```
 
-**Use Cases**:
+**Browser Import**:
+```typescript
+import { TalkscriberBrowserTranscriptionService } from '@talkscriber-npm/ts-client';
+
+const talkscriber = new TalkscriberBrowserTranscriptionService({ /* config */ });
+```
+
+### 1. 🖥️ Node.js Usage (Backend/CLI)
+
+Perfect for:
 - ✅ CLI tools and terminal applications
 - ✅ Backend/server-side services
 - ✅ Processing pre-recorded audio files
 - ✅ Node.js microservices
 - ✅ Batch audio processing
 
-**Technical Details**:
-- Requires Node.js runtime
-- Uses `ws` npm package for WebSocket
-- Uses Node.js `crypto.randomUUID()` for session IDs
-- Callback-based event handling
-- Includes Node.js dependencies
-
-**Example Code**:
+**Example**:
 ```typescript
 import { TalkscriberTranscriptionService } from '@talkscriber-npm/ts-client';
 
@@ -225,77 +215,51 @@ await talkscriber.connect();
 talkscriber.send(audioData, sampleRate);
 ```
 
-**Live Example**: `examples/nodejs/talkscriber_client.ts`
+**Live Example**: `examples/nodejs/talkscriber_client.ts` — Run with `npm run example`
 
-> **💡 Quick Start**: Run `npm run example` to test with an audio file. See [Running the Examples](#running-the-examples) for details.
+### 2. 🌐 Browser Usage (Web Apps)
 
-### 2. 🌐 Browser Implementation (for Web Apps)
-
-**File**: `src/TalkscriberTranscriptionService.browser.ts`
-
-**Environment**: Web browsers, frontend applications
-
-**Import Statement**:
-```typescript
-import { TalkscriberTranscriptionService } from '@talkscriber-npm/ts-client/TalkscriberTranscriptionService.browser.js';
-```
-
-**Use Cases**:
+Perfect for:
 - ✅ Web applications with microphone access
 - ✅ Single Page Applications (SPA)
 - ✅ React/Vue/Angular apps
 - ✅ Real-time browser transcription
 - ✅ Client-side audio processing
 
-**Technical Details**:
-- Runs in web browsers
-- Uses native browser `WebSocket` API (no npm packages needed)
-- Custom UUID generation (browser-compatible)
-- Zero Node.js dependencies
-- Works with modern bundlers (Webpack, Vite, etc.)
-
-**Example Code**:
+**Example**:
 ```typescript
-import { TalkscriberTranscriptionService } from '@talkscriber-npm/ts-client/TalkscriberTranscriptionService.browser.js';
+import { TalkscriberBrowserTranscriptionService } from '@talkscriber-npm/ts-client';
 
-const talkscriber = new TalkscriberTranscriptionService({
+const talkscriber = new TalkscriberBrowserTranscriptionService({
   apiKey: 'your-api-key',
   language: 'en',
   enableTurnDetection: true
 });
 
 await talkscriber.connect();
-// Get microphone stream and send audio
 talkscriber.send(audioData, sampleRate);
 ```
 
-**Live Example**: `examples/ui/` - Complete web UI with microphone access
+**Live Example**: `examples/ui/` — Run with `npm run dev:ui`
 
-> **💡 Quick Start**: Run `npm run dev:ui` to launch the browser example. See [Running the Examples](#running-the-examples) for details.
+### 📊 Comparison
 
-### 📊 Side-by-Side Comparison
-
-| Aspect | 🖥️ Node.js Implementation | 🌐 Browser Implementation |
-|--------|---------------------------|---------------------------|
-| **Import Path** | `@talkscriber-npm/ts-client` | `@talkscriber-npm/ts-client/TalkscriberTranscriptionService.browser.js` |
-| **Runtime** | Node.js (v14+) | Modern browsers (Chrome, Firefox, Safari, Edge) |
-| **WebSocket** | `ws` npm package | Native browser `WebSocket` API |
-| **UUID** | `crypto.randomUUID()` | Custom Math.random() implementation |
-| **Dependencies** | ✅ Requires `ws` package | ❌ Zero external dependencies |
-| **Event System** | Callbacks | Callbacks |
-| **Typical Use** | CLI tools, backend APIs, file processing | Web UIs, microphone capture, SPAs |
-| **Example Location** | `examples/nodejs/` | `examples/ui/` |
-| **Run Command** | `npm run example` | `npm run dev:ui` |
+| Aspect | 🖥️ Node.js | 🌐 Browser |
+|--------|------------|------------|
+| **Import** | `@talkscriber-npm/ts-client` | `@talkscriber-npm/ts-client` |
+| **Class Name** | `TalkscriberTranscriptionService` | `TalkscriberBrowserTranscriptionService` |
+| **Runtime** | Node.js (v14+) | Modern browsers |
+| **Dependencies** | Requires `ws` package | Zero dependencies |
+| **Typical Use** | File processing, backend APIs | Microphone, web UIs |
 
 ### 🔧 Shared Architecture
 
-Both implementations extend the same `TalkscriberBase` class, which means:
-- ✅ **Identical API**: Same methods, same configuration options
-- ✅ **Consistent behavior**: Same transcription quality and features
-- ✅ **Shared logic**: Audio resampling, message handling, connection management
-- ✅ **Easy to switch**: Minimal code changes when migrating between platforms
+Both implementations share the same:
+- ✅ **API**: Same methods and configuration options
+- ✅ **Behavior**: Same transcription quality and features  
+- ✅ **Logic**: Audio resampling, message handling, connection management
 
-**The ONLY difference is the environment-specific code** (WebSocket implementation and UUID generation).
+The ONLY differences are environment-specific WebSocket implementations and UUID generation.
 
 ## Smart Turn Detection
 
@@ -738,7 +702,7 @@ my-talkscriber-web/
 ### Step 3: Create JavaScript File (app.js)
 
 ```javascript
-import { TalkscriberTranscriptionService } from 'https://cdn.jsdelivr.net/npm/@talkscriber-npm/ts-client/dist/index.browser.js';
+import { TalkscriberBrowserTranscriptionService } from 'https://cdn.jsdelivr.net/npm/@talkscriber-npm/ts-client/dist/index.browser.js';
 
 class TalkscriberApp {
     constructor() {
@@ -785,7 +749,7 @@ class TalkscriberApp {
             this.startBtn.disabled = true;
 
             // Initialize Talkscriber
-            this.talkscriber = new TalkscriberTranscriptionService({
+            this.talkscriber = new TalkscriberBrowserTranscriptionService({
                 apiKey: apiKey,
                 language: this.languageSelect.value,
                 enableTurnDetection: this.turnDetectionCheckbox.checked,
@@ -1189,7 +1153,7 @@ npm install @talkscriber-npm/ts-client
 
 Then in your TypeScript/JavaScript:
 ```typescript
-import { TalkscriberTranscriptionService } from '@talkscriber-npm/ts-client/dist/TalkscriberTranscriptionService.browser.js';
+import { TalkscriberBrowserTranscriptionService } from '@talkscriber-npm/ts-client';
 ```
 
 **Handle Connection Errors:**
