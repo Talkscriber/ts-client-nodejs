@@ -107,22 +107,16 @@ async function demonstrateUsagePatterns() {
     });
 
     try {
-        console.log('🔌 Connecting to TalkScriber service...');
-        await basicClient.connect();
-        console.log('✅ Connected successfully!');
-
-        console.log('🎤 Sending speak request...');
-        basicClient.sendSpeakRequest("This is a basic TTS example with real-time playback.");
-
-        console.log('⏳ Waiting for audio generation and playback...');
-        await new Promise(resolve => setTimeout(resolve, 5000));
-
+        console.log('🔄 Running basic TTS test...');
+        await basicClient.runSimpleTest("This is a basic TTS example with real-time playback.");
         console.log('✅ Test 1 completed successfully!\n');
     } catch (error) {
         console.error('❌ Test 1 failed:', error);
-    } finally {
-        basicClient.close();
     }
+
+    // Wait between tests to ensure cleanup
+    console.log('⏸️  Waiting 2 seconds before next test...\n');
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
     // ===========================
     // Test 2: Silent mode (no playback, save to file)
@@ -149,6 +143,10 @@ async function demonstrateUsagePatterns() {
     } catch (error) {
         console.error('❌ Test 2 failed:', error);
     }
+
+    // Wait between tests to ensure cleanup
+    console.log('⏸️  Waiting 2 seconds before next test...\n');
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
     // ===========================
     // Test 3: Both playback and file saving with custom generation config
