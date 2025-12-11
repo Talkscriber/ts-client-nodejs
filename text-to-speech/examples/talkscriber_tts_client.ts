@@ -3,10 +3,18 @@ import { TalkScriberTTSService } from '../src/TalkScriberTTSService';
 async function main() {
     const ttsClient = new TalkScriberTTSService({
         apiKey: '<YOUR_API_KEY>',
-        speakerName: 'tara',
+        speakerName: 'Realistic female voice in the 30s age with american accent. Normal pitch, warm timbre, conversational pacing.',
         text: "Hello, this is a test of the text-to-speech system.",
         enablePlayback: true,
         saveAudioPath: './output/tts_output.wav',
+        // Optional: Configure Maya generation parameters
+        mayaGenerationConfig: {
+            temperature: 0.7,
+            top_p: 0.9,
+            top_k: 50,
+            // max_tokens: 1000,
+            // repetition_penalty: 1.1
+        },
         onAudioChunk: (chunk: Buffer) => {
             console.log(`Received audio chunk: ${chunk.length} bytes`);
         },
@@ -59,7 +67,7 @@ async function demonstrateUsagePatterns() {
     console.log('1. Basic usage with playback:');
     const basicClient = new TalkScriberTTSService({
         apiKey: '<YOUR_API_KEY>',
-        speakerName: 'tara',
+        speakerName: 'Realistic male voice in the 30s age with american accent. Normal pitch, warm timbre, conversational pacing.',
         enablePlayback: true
     });
     
@@ -78,7 +86,7 @@ async function demonstrateUsagePatterns() {
     console.log('\n2. Silent mode (save to file only):');
     const silentClient = new TalkScriberTTSService({
         apiKey: '<YOUR_API_KEY>',
-        speakerName: 'tara',
+        speakerName: 'Realistic female voice in the 20s age with british accent. High pitch, bright timbre, energetic pacing.',
         enablePlayback: false,
         saveAudioPath: './output/silent_audio.wav'
     });
@@ -90,13 +98,18 @@ async function demonstrateUsagePatterns() {
         console.error('Silent client error:', error);
     }
 
-    // 3. Both playback and file saving
-    console.log('\n3. Playback + file saving:');
+    // 3. Both playback and file saving with custom generation config
+    console.log('\n3. Playback + file saving with custom generation config:');
     const fullClient = new TalkScriberTTSService({
         apiKey: '<YOUR_API_KEY>',
-        speakerName: 'tara',
+        speakerName: 'Deep male voice in the 40s age with australian accent. Low pitch, rich timbre, slow pacing.',
         enablePlayback: true,
-        saveAudioPath: './output/full_audio.wav'
+        saveAudioPath: './output/full_audio.wav',
+        mayaGenerationConfig: {
+            temperature: 0.8,
+            top_p: 0.95,
+            top_k: 100
+        }
     });
     
     try {

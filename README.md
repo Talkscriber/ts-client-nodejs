@@ -42,7 +42,7 @@ Complete documentation for real-time audio transcription including installation,
 ### 🔊 Text-to-Speech Module
 Complete documentation for speech synthesis including installation, configuration, examples, and API reference.
 
-**Features**: Ultra-low latency streaming, multiple voice options, real-time playback, audio file export
+**Features**: Ultra-low latency streaming, natural language voice descriptions, real-time playback, audio file export, customizable generation parameters.
 
 [📖 Read Text-to-Speech Documentation →](./text-to-speech/README.md)
 
