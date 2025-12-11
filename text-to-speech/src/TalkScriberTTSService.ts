@@ -32,7 +32,7 @@ const SAMPLE_RATE = 24000;    // 24kHz sample rate (must match server)
 const CHANNELS = 1;          // Mono audio
 const BITS_PER_SAMPLE = 16;  // 16-bit audio
 const BYTES_PER_SAMPLE = BITS_PER_SAMPLE / 8;
-const MIN_AUDIO_BUFFER_SIZE = 20;
+const MIN_AUDIO_BUFFER_SIZE = 2;
 
 /**
  * TalkScriberTTSService class for real-time text-to-speech conversion.
