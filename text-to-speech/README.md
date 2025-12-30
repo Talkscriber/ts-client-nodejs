@@ -18,10 +18,16 @@ Follow these steps to install and use the ts-client-tts for TalkScriber:
     async function main() {
       const ttsClient = new TalkScriberTTSService({
         apiKey: '<YOUR_API_KEY>',
-        speakerName: 'tara',
+        speakerName: 'Realistic female voice in the 30s age with american accent. Normal pitch, warm timbre, conversational pacing.',
         enablePlayback: true,
         saveAudioPath: './output/audio.wav',
         text: "Hello, this is a test message.",
+        // Optional: Configure Maya generation parameters
+        mayaGenerationConfig: {
+          temperature: 0.7,
+          top_p: 0.9,
+          top_k: 50
+        },
         onAudioChunk: (chunk: Buffer) => {
           console.log(`Received audio chunk: ${chunk.length} bytes`);
         },
@@ -77,10 +83,40 @@ For complete examples of TTS usage, refer to the `examples` directory in the pac
 
 | Setting | Default | Description |
 |---------|---------|-------------|
+| `apiKey` | *required* | Your TalkScriber API authentication key |
 | `enablePlayback` | `true` | Enable real-time audio playback |
 | `saveAudioPath` | `undefined` | Optional path to save audio file |
-| `speakerName` | `"tara"` | Voice to use for speech synthesis |
+| `speakerName` | `"Realistic female voice..."` | Natural language description of desired voice characteristics |
 | `endpoint` | `"wss://api.talkscriber.com:9099"` | TTS server endpoint |
+| `mayaGenerationConfig` | `undefined` | Optional Maya model generation parameters (see below) |
+
+### Maya Generation Config
+
+The `mayaGenerationConfig` object allows fine-tuning of the TTS model's generation behavior:
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `temperature` | `number` | Controls randomness (0.0-1.0). Higher = more varied, lower = more consistent |
+| `top_p` | `number` | Nucleus sampling threshold (0.0-1.0) |
+| `top_k` | `number` | Limits vocabulary to top K tokens |
+| `max_tokens` | `number` | Maximum number of tokens to generate |
+| `repetition_penalty` | `number` | Penalty for repeating tokens (1.0 = no penalty) |
+
+### Voice Description Format
+
+The `speakerName` parameter now accepts natural language descriptions instead of preset voice names. Describe your desired voice using these attributes:
+
+- **Gender**: male, female, neutral
+- **Age**: 20s, 30s, 40s, etc.
+- **Accent**: american, british, australian, etc.
+- **Pitch**: high, normal, low, deep
+- **Timbre**: warm, bright, rich, clear
+- **Pacing**: slow, conversational, fast, energetic
+
+**Example descriptions:**
+- `"Realistic female voice in the 30s age with american accent. Normal pitch, warm timbre, conversational pacing."`
+- `"Deep male voice in the 40s age with british accent. Low pitch, rich timbre, slow pacing."`
+- `"Energetic female voice in the 20s age with australian accent. High pitch, bright timbre, fast pacing."`
 
 ## 💡 Usage Patterns
 
@@ -89,7 +125,7 @@ For complete examples of TTS usage, refer to the `examples` directory in the pac
 ```typescript
 const ttsClient = new TalkScriberTTSService({
   apiKey: 'your_api_key',
-  speakerName: 'tara',
+  speakerName: 'Realistic female voice in the 30s age with american accent. Normal pitch, warm timbre, conversational pacing.',
   enablePlayback: true
 });
 
@@ -103,7 +139,7 @@ ttsClient.sendSpeakRequest("Hello, world!");
 // Useful for testing or when you only want to save audio
 const ttsClient = new TalkScriberTTSService({
   apiKey: 'your_api_key',
-  speakerName: 'tara',
+  speakerName: 'Deep male voice in the 40s age with british accent. Low pitch, rich timbre, slow pacing.',
   enablePlayback: false,
   saveAudioPath: './output/audio.wav'
 });
@@ -111,18 +147,24 @@ const ttsClient = new TalkScriberTTSService({
 await ttsClient.runSimpleTest("This will be saved but not played.");
 ```
 
-### 3. 💾 Audio File Saving
+### 3. 💾 Audio File Saving with Custom Generation Config
 
 ```typescript
-// Save audio to file with playback
+// Save audio to file with playback and custom generation parameters
 const ttsClient = new TalkScriberTTSService({
   apiKey: 'your_api_key',
-  speakerName: 'tara',
+  speakerName: 'Energetic female voice in the 20s age with australian accent. High pitch, bright timbre, fast pacing.',
   enablePlayback: true,
-  saveAudioPath: './output/audio.wav'
+  saveAudioPath: './output/audio.wav',
+  mayaGenerationConfig: {
+    temperature: 0.8,
+    top_p: 0.95,
+    top_k: 100,
+    repetition_penalty: 1.1
+  }
 });
 
-await ttsClient.runSimpleTest("This will be played and saved.");
+await ttsClient.runSimpleTest("This will be played and saved with custom voice generation settings.");
 ```
 
 ### 4. 📡 Event Handling
@@ -130,7 +172,7 @@ await ttsClient.runSimpleTest("This will be played and saved.");
 ```typescript
 const ttsClient = new TalkScriberTTSService({
   apiKey: 'your_api_key',
-  speakerName: 'tara'
+  speakerName: 'Realistic male voice in the 30s age with american accent. Normal pitch, warm timbre, conversational pacing.'
 });
 
 // Listen for events
@@ -176,7 +218,7 @@ The project includes a complete example that demonstrates how to use the TalkScr
    ```typescript
    const ttsClient = new TalkScriberTTSService({
      apiKey: 'your-actual-api-key-here', // Replace this with your real API key
-     speakerName: 'tara',
+     speakerName: 'Realistic female voice in the 30s age with american accent. Normal pitch, warm timbre, conversational pacing.',
      enablePlayback: true,
      // ... rest of configuration
    });

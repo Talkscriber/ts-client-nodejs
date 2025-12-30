@@ -1,7 +1,7 @@
 {
   "name": "@talkscriber-npm/ts-client-tts",
-  "version": "0.0.2",
-  "description": "A JS/TypeScript client module for Talkscriber Text-to-Speech (TTS)",
+  "version": "1.0.0",
+  "description": "A JS/TypeScript client module for Talkscriber Text-to-Speech (TTS) with a better model.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [

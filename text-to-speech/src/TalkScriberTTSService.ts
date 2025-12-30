@@ -6,6 +6,14 @@ import * as path from "path";
 import * as AudioOutput from "naudiodon";
 import * as WavWriter from "wav";
 
+export interface MayaGenerationConfig {
+  temperature?: number;
+  top_p?: number;
+  top_k?: number;
+  max_tokens?: number;
+  repetition_penalty?: number;
+}
+
 export interface TalkScriberTTSOptions {
   apiKey: string;
   speakerName?: string;
@@ -13,6 +21,7 @@ export interface TalkScriberTTSOptions {
   enablePlayback?: boolean;
   saveAudioPath?: string;
   text?: string;
+  mayaGenerationConfig?: MayaGenerationConfig;
   onAudioChunk?: (chunk: Buffer) => void;
   onAudioComplete?: () => void;
   onError?: (error: Error) => void;
@@ -23,7 +32,7 @@ const SAMPLE_RATE = 24000;    // 24kHz sample rate (must match server)
 const CHANNELS = 1;          // Mono audio
 const BITS_PER_SAMPLE = 16;  // 16-bit audio
 const BYTES_PER_SAMPLE = BITS_PER_SAMPLE / 8;
-const MIN_AUDIO_BUFFER_SIZE = 20;
+const MIN_AUDIO_BUFFER_SIZE = 2;
 
 /**
  * TalkScriberTTSService class for real-time text-to-speech conversion.
@@ -63,7 +72,7 @@ export class TalkScriberTTSService extends EventEmitter {
     this.options = {
       ...options,
       endpoint: options.endpoint || "wss://api.talkscriber.com:9099",
-      speakerName: options.speakerName || "tara",
+      speakerName: options.speakerName || "Realistic female voice in the 30s age with american accent. Normal pitch, warm timbre, conversational pacing.",
       enablePlayback: options.enablePlayback !== false,
       text: options.text
     };
@@ -82,14 +91,19 @@ export class TalkScriberTTSService extends EventEmitter {
         console.log("TTS -> TalkScriber connection opened");
         this.isConnected = true;
         
-        // Send authentication message
-        const authMessage = {
-          uid: this.sessionId,
-          auth: this.options.apiKey,
-          type: "tts",
+        // Send authentication message using new API format
+        const authMessage: any = {
+          job_id: `tts_${this.sessionId}`,
+          text: "Authentication text", // Placeholder text for authentication
           speaker_name: this.options.speakerName,
-          text: this.options.text || "" // Include text in authentication message
+          model: "TTS_MAYA",
+          auth: this.options.apiKey
         };
+        
+        // Add optional maya_generation_config if provided
+        if (this.options.mayaGenerationConfig) {
+          authMessage.maya_generation_config = this.options.mayaGenerationConfig;
+        }
         
         this.ws!.send(JSON.stringify(authMessage));
         console.log("Authentication message sent:", JSON.stringify(authMessage, null, 2));
@@ -117,17 +131,9 @@ export class TalkScriberTTSService extends EventEmitter {
 
           authResponseReceived = true;
 
-          if (msg.type === "authenticated" || msg.type === "server_ready") {
+          if (msg.type === "authenticated") {
             this.isAuthenticated = true;
             console.log("TTS Authentication successful");
-            
-            // If we have a default text, send speak request immediately after authentication
-            // This ensures the server gets the text both in auth message and speak request
-            if (this.options.text) {
-              console.log("Sending speak request immediately after authentication (text already sent in auth message too)");
-              this.sendSpeakRequest(this.options.text);
-            }
-            
             resolve();
             return;
           }
@@ -208,7 +214,7 @@ export class TalkScriberTTSService extends EventEmitter {
    * @param {string} speakerName - Optional speaker name (overrides constructor setting).
    * @returns {boolean} True if request sent successfully.
    */
-  public sendSpeakRequest(text: string, speakerName?: string): boolean {
+  public sendSpeakRequest(text: string): boolean {
     if (!this.isAuthenticated) {
       throw new Error("Not authenticated. Call connect() first.");
     }
@@ -216,8 +222,7 @@ export class TalkScriberTTSService extends EventEmitter {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
       const speakMessage = {
         type: "speak",
-        text: text,
-        speaker: speakerName || this.options.speakerName
+        text: text
       };
       
       console.log(`Sending speak request for text: '${text.substring(0, 50)}${text.length > 50 ? '...' : ''}'`);
@@ -344,13 +349,12 @@ export class TalkScriberTTSService extends EventEmitter {
       console.log("Connected and authenticated successfully");
 
       // Wait a moment for connection to stabilize
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 500));
 
-      // Send speak request (only if we didn't already send one during authentication)
-      if (!this.options.text && this.sendSpeakRequest(testText)) {
+      // Send speak request with the actual text
+      const textToSpeak = text || this.options.text || testText;
+      if (this.sendSpeakRequest(textToSpeak)) {
         console.log("Speak request sent, waiting for audio chunks...");
-      } else if (this.options.text) {
-        console.log("Speak request already sent during authentication (text was also sent in auth message), waiting for audio chunks...");
       }
       
       // Wait for audio generation to complete
@@ -475,12 +479,13 @@ export class TalkScriberTTSService extends EventEmitter {
     console.debug(`Received JSON message: ${messageType}`);
     
     switch (messageType) {
-      case "server_ready":
-        console.log("Server confirmed ready for TTS");
+      case "speak_started":
+        console.log("Server acknowledged speak request - generation started");
         break;
         
       case "audio_complete":
-        console.log(`Audio generation completed! Received ${this.chunksReceived} chunks, ${this.totalBytes.toLocaleString()} total bytes`);
+        console.log(`Audio generation completed! Status: ${msg.status || 'success'}`);
+        console.log(`Received ${this.chunksReceived} chunks, ${this.totalBytes.toLocaleString()} total bytes`);
         this.generationComplete = true;
         
         // Close WAV writer if open
@@ -498,10 +503,6 @@ export class TalkScriberTTSService extends EventEmitter {
         const errorMsg = msg.message || "Unknown error";
         console.error(`Server error: ${errorMsg}`);
         this.emit("error", new Error(errorMsg));
-        break;
-        
-      case "stop_confirmed":
-        console.log(`Stop confirmed: ${msg.message || "Generation stopped"}`);
         break;
         
       default:

@@ -1,1 +1,1 @@
-export { TalkScriberTTSService, TalkScriberTTSOptions } from './TalkScriberTTSService';
+export { TalkScriberTTSService, TalkScriberTTSOptions, MayaGenerationConfig } from './TalkScriberTTSService';
