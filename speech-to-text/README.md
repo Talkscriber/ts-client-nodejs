@@ -11,6 +11,7 @@ ts-client is the official TypeScript client for Talkscriber, a state-of-the-Art 
 - **A Word Error Rate (WER) of less than 4%**
 - **Very low latency (under 150 ms)**
 - **Support for 50+ languages**
+- **Emotion classification metadata on end-of-utterance (EOS) segments (always on)**
 
 # Installation and Getting Started
 
@@ -104,6 +105,21 @@ The Talkscriber service returns transcription data in the following structured f
       "start": 0.0,
       "end": 0.9503124999999999,
       "text": "This is the first sentence.",
+      "emotion": {
+        "anger": 0.02,
+        "disgust": 0.01,
+        "fear": 0.04,
+        "joy": 0.02,
+        "neutral": 0.72,
+        "sadness": 0.02,
+        "surprise": 0.17
+      },
+      "emotion_audio": {
+        "neu": 0.10,
+        "hap": 0.05,
+        "ang": 0.02,
+        "sad": 0.83
+      },
       "EOS": true
     },
     {
@@ -125,6 +141,12 @@ Each segment contains the following properties:
 - **`end`**: End time of the segment in seconds  
 - **`text`**: The transcribed text content
 - **`EOS`**: End-of-Sentence flag indicating whether the segment is complete
+- **`emotion`**: Text-based emotion scores for the segment text (float scores in \([0, 1]\)).
+  - Text emotion labels: `anger`, `disgust`, `fear`, `joy`, `neutral`, `sadness`, `surprise`
+- **`emotion_audio`**: Audio-based emotion scores for the segment audio (float scores in \([0, 1]\)).
+  - Audio emotion labels: `neu`, `hap`, `ang`, `sad`
+
+**Note:** Emotion metadata is **always enabled** and is returned **alongside end-of-utterance segments** where `EOS: true`. It may be omitted for non-EOS partial segments.
 
 ### Callback Behavior
 
